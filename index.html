@@ -1,118 +1,41 @@
-<!--
-    Welcome to Ayush's website.
-    You managed to find my code :)
-    
-    Check out my other projects:
-    https://learnforsyth.org
-    https://authpl.us
-    
-    Enjoy looking through!
-    -->
-    <!DOCTYPE HTML>
-    <html lang="en">
-        <head>
-            <title>Ayush Gundawar</title>
-            <meta charset="utf-8" />
-            <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
-            <meta name="description" content="A portfolio for Ayush Gundawar." />
-            <meta property="og:title" content="Ayush Gundawar" />
-            <meta property="og:type" content="website" />
-            <meta property="og:description" content="I'm Ayush Gundawar, a 17 year old interested in software development and economics." />
-            <meta name="theme-color" content="#d982d8">
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet">
-            <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
-            <link id="icon-a" rel="shortcut icon" type="image/png"
-                href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/thumbs-up_1f44d.png" />
-            <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png?v=fa33007e" />
-            <meta name="twitter:player:stream" content="https://ayush.gundawar.me">
-            <meta name="twitter:player:stream:content_type" content="video/mp4">
-        </head>
-        <style>
-            body:before {
-            background-image: linear-gradient(to top, rgba(0, 0, 0, 0.671), rgba(0, 0, 0, 0.671)), url('assets/images/bg1.gif');
-            }
-        </style>
-        <body class="is-loading">
-            <svg xmlns="https://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 40 40"
-                display="none" width="0" height="0">
-                <symbol id="icon-951" viewBox="0 0 40 40">
-                    <path
-                        d="M24.5,13.6V5.8c0.2,0.2,0.4,0.3,0.6,0.5l6.8,6.8c0.2,0.2,0.3,0.4,0.5,0.6L24.5,13.6L24.5,13.6z M22.3,14.2 c0,0.4,0.2,0.8,0.5,1.1c0.3,0.3,0.7,0.5,1.1,0.5h9v17.5c0,0.4-0.2,0.8-0.5,1.1c-0.3,0.3-0.7,0.5-1.1,0.5H9.1c-0.4,0-0.8-0.2-1.1-0.5 c-0.3-0.3-0.5-0.7-0.5-1.1V6.7c0-0.4,0.2-0.8,0.5-1.1c0.3-0.3,0.7-0.5,1.1-0.5h13.3L22.3,14.2L22.3,14.2z" />
-                </symbol>
-                <symbol id="icon-93f" viewBox="-0.3 -0.5 25 25">
-                    <path
-                        d="M22.288 21h-20.576c-.945 0-1.712-.767-1.712-1.712v-13.576c0-.945.767-1.712 1.712-1.712h20.576c.945 0 1.712.767 1.712 1.712v13.576c0 .945-.767 1.712-1.712 1.712zm-10.288-6.086l-9.342-6.483-.02 11.569h18.684v-11.569l-9.322 6.483zm8.869-9.914h-17.789l8.92 6.229s6.252-4.406 8.869-6.229z" />
-                </symbol>
-                <symbol id="icon-924" viewBox="0 0 24 24">
-                    <path
-                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                </symbol>
-                <symbol id="icon-923" viewBox="0 0 40 40">
-                    <path
-                        d="M32.3,14.4c0,1.2-0.4,2.2-1.3,3.1s-1.9,1.3-3.1,1.3s-2.2-0.4-3.1-1.3c-0.9-0.9-1.3-1.9-1.3-3.1s0.4-2.2,1.3-3.1 c0.9-0.9,1.9-1.3,3.1-1.3s2.2,0.4,3.1,1.3S32.3,13.2,32.3,14.4z M18.5,27.6c0-1.2-0.4-2.3-1.3-3.2c-0.9-0.9-1.9-1.3-3.2-1.3 c-0.3,0-0.6,0-1,0.1l1.9,0.8c0.9,0.4,1.6,1,2,1.9c0.4,0.9,0.4,1.8,0,2.7c-0.4,0.9-1,1.6-1.9,1.9c-0.9,0.4-1.8,0.4-2.7,0 c-0.3-0.1-0.6-0.2-1.1-0.4c-0.5-0.2-0.9-0.3-1.1-0.4c0.4,0.7,0.9,1.3,1.6,1.7c0.7,0.4,1.5,0.7,2.3,0.7c1.2,0,2.3-0.4,3.2-1.3 C18.1,29.9,18.5,28.9,18.5,27.6L18.5,27.6z M33.3,14.4c0-1.5-0.5-2.8-1.6-3.8C30.7,9.5,29.4,9,27.9,9c-1.5,0-2.8,0.5-3.9,1.6 c-1.1,1.1-1.6,2.3-1.6,3.8c0,1.5,0.5,2.8,1.6,3.9c1.1,1.1,2.4,1.6,3.9,1.6c1.5,0,2.8-0.5,3.8-1.6C32.8,17.2,33.3,15.9,33.3,14.4z M36,14.4c0,2.2-0.8,4.2-2.4,5.7c-1.6,1.6-3.5,2.4-5.7,2.4l-7.8,5.7c-0.1,1.5-0.8,2.8-1.9,3.9s-2.5,1.6-4.1,1.6 c-1.4,0-2.7-0.5-3.8-1.4s-1.8-2-2.1-3.4L4,27.3v-7.7l6.9,2.8c0.9-0.6,2-0.9,3.1-0.9c0.2,0,0.4,0,0.6,0l5.1-7.3 c0-2.2,0.8-4.1,2.4-5.7s3.5-2.4,5.7-2.4c2.2,0,4.2,0.8,5.7,2.4C35.2,10.3,36,12.2,36,14.4z" />
-                </symbol>
-            </svg>
-            <div id="wrapper">
-                <div id="main">
-                    <div class="inner">
-                        <!--
-                            This div is commented out until I can find an
-                            image of myself that matches well with the 
-                            color scheme
-                            
-                            <div id="image01" class="image">
-                                <span class="deferred">
-                                    <img src="https://media.discordapp.net/attachments/753243577827721227/883048268576215060/AKedOLQIM6ZmSopod3wFd9Ek0hueYfKxWEklFcwLl89Kmws900-c-k-c0x00ffffff-no-rj.png?width=391&height=391"
-                                        data-src="https://media.discordapp.net/attachments/753243577827721227/883048268576215060/AKedOLQIM6ZmSopod3wFd9Ek0hueYfKxWEklFcwLl89Kmws900-c-k-c0x00ffffff-no-rj.png?width=391&height=391"
-                                        alt="A profile picture of Ayush" />
-                                </span>
-                            </div>-->
-                        <h1 id="text02">Hey, I'm Ayush!</h1>
-                        <p id="text01">I'm a 17-year old software developer interested in asymmetric cryptography, web development, and digital asset entrepreneurship.</p>
-                        <ul id="icons01" class="icons">
-                        <li>
-                            <a class="n03" href="mailto:ayushgundawar@gmail.com?subject=Hey Ayush!">
-                                <svg>
-                                    <use xlink:href="#icon-93f"></use>
-                                </svg>
-                                <span class="label">Email</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="n02" href="https://github.com/ayushgun">
-                                <svg>
-                                    <use xlink:href="#icon-924"></use>
-                                </svg>
-                                <span class="label">GitHub</span>
-                            </a>
-                        </li>
-                    </div>
-                </div>
-            </div>
-            <body oncontextmenu="return false;">
-                <style>
-                    * {
-                    cursor: url('assets/cursor.png'), auto;
-                    }
-                </style>
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-                <script type="text/javascript" src="assets/javascript/portfolio.js"></script>
-                <script type="text/javascript" src="assets/javascript/app.js"></script>
-                <script type="text/javascript" src="assets/javascript/title.js"></script>
-                <script type="text/javascript" src="assets/javascript/icons.js"></script>
-                <script> var _0x42ee66 = _0x4aa0; (function (_0x28c923, _0x134c1e) { var _0x1c5a7c = _0x4aa0, _0xc9dd0a = _0x28c923(); while (!![]) { try { var _0x2f9a4e = parseInt(_0x1c5a7c(0xf5)) / 0x1 * (-parseInt(_0x1c5a7c(0xec)) / 0x2) + parseInt(_0x1c5a7c(0xef)) / 0x3 * (parseInt(_0x1c5a7c(0xed)) / 0x4) + -parseInt(_0x1c5a7c(0xe3)) / 0x5 * (-parseInt(_0x1c5a7c(0xf1)) / 0x6) + parseInt(_0x1c5a7c(0xf0)) / 0x7 + -parseInt(_0x1c5a7c(0xf2)) / 0x8 * (parseInt(_0x1c5a7c(0xf4)) / 0x9) + parseInt(_0x1c5a7c(0xe8)) / 0xa + parseInt(_0x1c5a7c(0xe9)) / 0xb * (-parseInt(_0x1c5a7c(0xeb)) / 0xc); if (_0x2f9a4e === _0x134c1e) break; else _0xc9dd0a['push'](_0xc9dd0a['shift']()); } catch (_0x52c71f) { _0xc9dd0a['push'](_0xc9dd0a['shift']()); } } }(_0x1dfb, 0x3901a)); var current = 0x0, icons = ['https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/smiling-face-with-smiling-eyes_1f60a.png', _0x42ee66(0xf3), _0x42ee66(0xe6), 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/fire_1f525.png', _0x42ee66(0xe5), _0x42ee66(0xf6), _0x42ee66(0xee)]; function _0x1dfb() { var _0x49d5c8 = ['icon-a', '3759900qsAosi', '7878959tDXQmN', 'length', '12LtOLEs', '2986CxbpUk', '4hwPRpk', 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/monkey_1f412.png', '325497KVlKHL', '2801477KNhBwZ', '1109814DRxdOt', '8QjzyZi', 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/technologist-medium-skin-tone_1f9d1-1f3fd-200d-1f4bb.png', '2340729wdLegW', '30MnGPhy', 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/red-apple_1f34e.png', '10SlJTJs', 'getElementById', 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/ghost_1f47b.png', 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/sparkles_2728.png']; _0x1dfb = function () { return _0x49d5c8; }; return _0x1dfb(); } function _0x4aa0(_0x4f2a9d, _0x5ca8d9) { var _0x1dfb65 = _0x1dfb(); return _0x4aa0 = function (_0x4aa071, _0x219c08) { _0x4aa071 = _0x4aa071 - 0xe3; var _0x3d6c2c = _0x1dfb65[_0x4aa071]; return _0x3d6c2c; }, _0x4aa0(_0x4f2a9d, _0x5ca8d9); } setInterval(function () { var _0x3cdfd6 = _0x42ee66, _0x5bf1eb = ++current % icons[_0x3cdfd6(0xea)], _0x2ab4ee = icons[_0x5bf1eb]; document[_0x3cdfd6(0xe4)](_0x3cdfd6(0xe7))['href'] = _0x2ab4ee; }, 0x7d0);</script>
-                <embed src="assets/orchestralknight.mp3" loop="true" autostart="true" width="2" height="0">
-                <!--<script>
-                    var DGPkey = "Slo1ODY1cFFZWVdaYmJmY0Y0Mytsa2JWampBUWlEdkJlWjM2eHFtS29odz0="; //mandatory
-                    var DGPnativerequest = "0";
-                    var DGPdelay = "0";
-                    var DGPmtype = "flying";
-                    var DGPmessage = "Allow notifications to always stay up-to-date with Ayush's latest projects?";
-                    var DGPallowbutton = "Okay!";
-                    var DGPrejectbutton = "No thanks!";
-                    </script>
-                    <script type="text/javascript" src="//dgpcdn.org/lib.js"></script>-->
-        </body>
-    </html>
+<!DOCTYPE html>
+<html>
+    <!-- Ayush's Personal Website -->
+	<head>
+		<meta charset="utf-8" />
+		<script src="https://use.fontawesome.com/d1341f9b7a.js"></script>
+		<link rel="stylesheet" href="https://use.typekit.net/oov2wcw.css" />
+		<link rel="stylesheet" href="style.css" />
+		<title>Ayush Gundawar</title>
+	</head>
+
+	<body>
+		<div class="box">
+			<h1>Ayush Gundawar</h1>
+			<h5>Student • Software Developer</h5>
+			<p>
+				Hey! I'm Ayush Gundawar, a 17-year old software developer & high school
+				student. I'm interested in software engineering, web development, and
+				smart contracts. I am also an economic analyst interested in
+				macroeconomics, cryptocurrencies, and blockchain technologies.
+			</p>
+			<ul>
+				<li>
+					<a href="mailto:ayushgundawar@gmail.com"
+						><i class="fa fa-envelope-square" aria-hidden="true"></i
+					></a>
+				</li>
+				<li>
+					<a href="https://www.linkedin.com/in/ayushgun/"
+						><i class="fa fa-linkedin-square" aria-hidden="true"></i
+					></a>
+				</li>
+				<li>
+					<a href="https://github.com/ayushgun"
+						><i class="fa fa-github-square" aria-hidden="true"></i
+					></a>
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>
