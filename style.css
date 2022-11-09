@@ -1,0 +1,87 @@
+/* Global Styling */
+*:not(code) {
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Georgia", serif;
+}
+
+/* Title Section */
+h1 {
+	margin: 0;
+}
+
+/* Regular Text */
+p,
+a {
+	font-size: 18;
+	line-height: 140%;
+}
+
+/* Hyperlink */
+a {
+	color: #a1b4c7;
+}
+
+/* Divider */
+hr {
+	opacity: 20%;
+}
+
+/* Theme Button */
+button.theme-switcher {
+	padding-left: 1px;
+	color: white;
+	font-size: 18;
+	opacity: 50%;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	border: none;
+	cursor: pointer;
+	overflow: hidden;
+	outline: none;
+}
+
+html,
+body {
+	color: #ddd;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-content: stretch;
+	align-items: center;
+	background-color: #333333;
+}
+
+/* Light Mode Toggle */
+.light-mode {
+	color: black;
+	background-color: white;
+}
+
+.light-mode a {
+	color: #ea8810;
+}
+
+.light-mode button.theme-switcher {
+	color: black;
+}
+
+div.flex-container {
+	display: flex;
+	justify-content: flex-start;
+	align-content: flex-start;
+	align-items: flex-start;
+	overflow: auto;
+}
+
+div.main-content {
+	max-width: 680px;
+}
+
+div.pages-menu {
+	padding-top: 2;
+	padding-bottom: 2;
+	text-align: left;
+	font-size: 16;
+}
