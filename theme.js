@@ -3,7 +3,7 @@ function switchTheme() {
 	body.classList.toggle("light-mode");
 }
 
-function change(iconID) {
+function changeIcon(iconID) {
 	if (document.getElementById(iconID).className == "fa-regular fa-lightbulb") {
 		document.getElementById(iconID).className = "fa-solid fa-lightbulb";
 	} else {
