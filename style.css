@@ -34,17 +34,13 @@ button.theme-switcher {
 	font-size: 18;
 	opacity: 50%;
 	background-color: transparent;
-	background-repeat: no-repeat;
 	border: none;
 	cursor: pointer;
-	overflow: hidden;
-	outline: none;
 }
 
 html,
 body {
 	color: #ddd;
-	height: 100%;
 	width: 100%;
 	display: flex;
 	justify-content: center;
