@@ -73,6 +73,10 @@ div.flex-container {
 	align-content: flex-start;
 	align-items: flex-start;
 	overflow: auto;
+	margin-top: 5%;
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-bottom: 5%;
 }
 
 div.main-content {
