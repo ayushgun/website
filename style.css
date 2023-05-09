@@ -1,60 +1,61 @@
 h1 {
-	font-size: 25;
-	margin: 0;
+  font-size: 25;
+  margin: 0;
 }
 
 p,
 a {
-	font-size: 1.2rem;
-	line-height: 140%;
+  font-size: 1.2rem;
+  line-height: 140%;
 }
 
 a {
-	color: #a1b4c7;
+  color: #a1b4c7;
 }
 
 hr {
-	opacity: 10%;
+  opacity: 10%;
 }
 
 html,
 body {
-	-ms-overflow-style: none;
-	scrollbar-width: none;
-	padding: 0;
-	margin: 0;
-	color: #ddd;
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-content: stretch;
-	align-items: center;
-	background-color: #1f2020;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  font-family: "Figtree", sans-serif;
+  padding: 0;
+  margin: 0;
+  color: #ffffff;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: stretch;
+  align-items: center;
+  background-color: #252526;
 }
 
 ::-webkit-scrollbar {
-	display: none; /* Safari and Chrome */
+  display: none; /* Safari and Chrome */
 }
 
 div.flex-container {
-	display: flex;
-	justify-content: flex-start;
-	align-content: flex-start;
-	align-items: flex-start;
-	margin-top: 5%;
-	margin-left: 5%;
-	margin-right: 5%;
-	margin-bottom: 5%;
-	max-width: 680px;
+  display: flex;
+  justify-content: flex-start;
+  align-content: flex-start;
+  align-items: flex-start;
+  margin-top: 5%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 5%;
+  max-width: 680px;
 }
 
 .example::-webkit-scrollbar {
-	display: none;
+  display: none;
 }
 
 div.pages-menu {
-	padding-top: 2;
-	padding-bottom: 2;
-	text-align: left;
-	font-size: 16;
+  padding-top: 2;
+  padding-bottom: 2;
+  text-align: left;
+  font-size: 16;
 }
