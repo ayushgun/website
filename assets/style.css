@@ -1,5 +1,11 @@
+@font-face {
+  font-family: "Soehne";
+  src: url(Soehne.ttf);
+}
+
 h1 {
   font-size: 25;
+  font-weight: 500;
   margin: 0;
 }
 
@@ -10,7 +16,7 @@ a {
 }
 
 a {
-  color: #a1b4c7;
+  color: #a6bed6;
 }
 
 hr {
@@ -21,7 +27,8 @@ html,
 body {
   -ms-overflow-style: none;
   scrollbar-width: none;
-  font-family: "Figtree", sans-serif;
+  font-family: "Soehne", sans-serif;
+  font-weight: 200;
   padding: 0;
   margin: 0;
   color: #ffffff;
@@ -30,11 +37,11 @@ body {
   justify-content: center;
   align-content: stretch;
   align-items: center;
-  background-color: #252526;
+  background-color: #19191a;
 }
 
 ::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+  display: none;
 }
 
 div.flex-container {
