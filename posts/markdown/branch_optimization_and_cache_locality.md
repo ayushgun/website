@@ -2,7 +2,7 @@
 
 > May 20, 2023
 
-High-performance computing has raised the bar for effective hardware resource management. Two key aspects of this paradigm are branch prediction optimization and cache locality. This article delivers a brief analysis of these aspects in relation to C++ programs, complete with examples demonstrating suboptimal and optimal usage patterns.
+High-performance computing has raised the bar for effective hardware resource management. Two key aspects of this paradigm are branch prediction optimization and cache locality. This blog post delivers a brief analysis of these aspects in relation to C++ programs, complete with examples demonstrating suboptimal and optimal usage patterns.
 
 ## Branch Prediction
 
@@ -38,7 +38,7 @@ This approach, however, requires prior knowledge about the data and an extra sor
 
 ## Cache Locality
 
-**Cache locality** is a property of a memory reference pattern, where accesses to closely located data are likely to be performed in quick succession. Owing to C++'s granular control over memory, cache locality can be optimized in C++ code. This property manifests in two forms: **spatial locality** and **temporal locality**.
+**Cache locality** is a property of a memory reference pattern, where accesses to closely located data are likely to be performed in quick succession. This property manifests in two forms: **spatial locality** and **temporal locality**.
 
 ### Spatial Locality
 
@@ -86,4 +86,4 @@ for (int i = 0; i < n; ++i) {
 }
 ```
 
-In conclusion, while C++ offers various avenues for optimizing branch prediction and cache locality, these strategies should be employed carefully. Performance profiling tools can play a vital role in identifying performance bottlenecks and directing optimization efforts. Always remember that the overhead of optimization should not undermine the benefits in terms of increased complexity or diminished code readability.
+In conclusion, while there are various avenues for optimizing branch prediction and cache locality, these strategies should be employed carefully. Performance profiling tools can play a vital role in identifying performance bottlenecks and directing optimization efforts. Always remember that the overhead of optimization should not undermine the benefits in terms of increased complexity or diminished code readability.
