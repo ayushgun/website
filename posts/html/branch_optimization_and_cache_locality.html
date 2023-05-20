@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link href="../../static/styles.css" rel="stylesheet" />
+    <link href="../../static/highlights.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="centered-div">
+      <h1>Branch Prediction Optimization and Cache Locality</h1>
+      <blockquote>
+        <p>May 20, 2023</p>
+      </blockquote>
+      <p>
+        High-performance computing has raised the bar for effective hardware
+        resource management. Two key aspects of this paradigm are branch
+        prediction optimization and cache locality. This article delivers a
+        brief analysis of these aspects in relation to C++ programs, complete
+        with examples demonstrating suboptimal and optimal usage patterns.
+      </p>
+      <h2>Branch Prediction</h2>
+      <p>
+        Modern processor architectures, in tandem with sophisticated compilers,
+        utilize a mechanism known as <strong>branch prediction</strong> to
+        prefigure the outcome of conditional branches. This foresight can
+        dramatically enhance program execution speed by circumventing pipeline
+        stalls—a situation that occurs when a branch is incorrectly predicted.
+      </p>
+      <p>Consider the following C++ code:</p>
+      <div class="codehilite">
+        <pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">process</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+      </div>
+
+      <p>
+        The branching in this loop depends on the data in <code>arr[]</code> and
+        the value of threshold <code>t</code>, which can be unpredictable,
+        resulting in erroneous branch prediction and the associated pipeline
+        stalls. This issue can be addressed by reorganizing the data in a way
+        that aligns with the branch prediction logic, a technique known as
+        <strong>branch prediction hinting</strong>.
+      </p>
+      <p>
+        In a scenario where we know in advance that the majority of elements in
+        <code>arr[]</code> are likely to be above <code>t</code>, we can
+        rearrange the data such that these elements are placed at the beginning
+        of the array:
+      </p>
+      <div class="codehilite">
+        <pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="n">arr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">t</span><span class="p">](</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">process</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+      </div>
+
+      <p>
+        This approach, however, requires prior knowledge about the data and an
+        extra sorting step, which may not be practical or efficient in all
+        cases. Therefore, it should be applied judiciously.
+      </p>
+      <h2>Cache Locality</h2>
+      <p>
+        <strong>Cache locality</strong> is a property of a memory reference
+        pattern, where accesses to closely located data are likely to be
+        performed in quick succession. Owing to C++'s granular control over
+        memory, cache locality can be optimized in C++ code. This property
+        manifests in two forms: <strong>spatial locality</strong> and
+        <strong>temporal locality</strong>.
+      </p>
+      <h3>Spatial Locality</h3>
+      <p>
+        Spatial locality implies that accessing data elements stored closely in
+        memory tends to be beneficial due to the block-based data movement
+        strategies of modern memory hierarchies. This principle is particularly
+        relevant when traversing data structures such as arrays.
+      </p>
+      <p>
+        Consider this example where a 2D array is traversed in column-major
+        order:
+      </p>
+      <div class="codehilite">
+        <pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">cols</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">rows</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+      </div>
+
+      <p>
+        This traversal pattern can result in frequent cache misses, negatively
+        impacting performance. A more efficient approach is to traverse in
+        row-major order, aligning with the row-major storage of multidimensional
+        arrays in C++:
+      </p>
+      <div class="codehilite">
+        <pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">rows</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">cols</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+      </div>
+
+      <h3>Temporal Locality</h3>
+      <p>
+        Temporal locality refers to the tendency of the same memory locations to
+        be accessed within short periods. Consider the following C++ example:
+      </p>
+      <div class="codehilite">
+        <pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">func</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="p">}</span>
+</code></pre>
+      </div>
+
+      <p>
+        In this example, <code>arr[i]</code> is accessed twice, with a
+        substantial interval between the two accesses, which could lead to cache
+        eviction in between, negatively impacting temporal locality. A better
+        approach would be to minimize the interval between accesses to the same
+        memory location:
+      </p>
+      <div class="codehilite">
+        <pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">func</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+      </div>
+
+      <p>
+        In conclusion, while C++ offers various avenues for optimizing branch
+        prediction and cache locality, these strategies should be employed
+        carefully. Performance profiling tools can play a vital role in
+        identifying performance bottlenecks and directing optimization efforts.
+        Always remember that the overhead of optimization should not undermine
+        the benefits in terms of increased complexity or diminished code
+        readability.
+      </p>
+    </div>
+  </body>
+</html>
