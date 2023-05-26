@@ -2,8 +2,6 @@
 
 > May 20, 2023
 
----
-
 The juxtaposition of punk and hip-hop, two genres steeped in raw authenticity, social defiance, and potent expression, illustrates a captivating cultural evolution. In recent years, there has been an uprising of punk influence within hip-hop. This trend is not merely a blend of sounds but a comprehensive reshaping of aesthetics, production, and vocal techniques. It unveils a fascinating cross-cultural and cross-genre dialogue that elevates the raw ethos of both genres.
 
 ## Historical Parallels and Emerging Convergence

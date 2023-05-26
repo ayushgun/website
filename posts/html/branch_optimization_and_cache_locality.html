@@ -14,7 +14,7 @@
       <p>
         High-performance computing has raised the bar for effective hardware
         resource management. Two key aspects of this paradigm are branch
-        prediction optimization and cache locality. This article delivers a
+        prediction optimization and cache locality. This blog post delivers a
         brief analysis of these aspects in relation to C++ programs, complete
         with examples demonstrating suboptimal and optimal usage patterns.
       </p>
@@ -72,9 +72,8 @@
       <p>
         <strong>Cache locality</strong> is a property of a memory reference
         pattern, where accesses to closely located data are likely to be
-        performed in quick succession. Owing to C++'s granular control over
-        memory, cache locality can be optimized in C++ code. This property
-        manifests in two forms: <strong>spatial locality</strong> and
+        performed in quick succession. This property manifests in two forms:
+        <strong>spatial locality</strong> and
         <strong>temporal locality</strong>.
       </p>
       <h3>Spatial Locality</h3>
@@ -143,7 +142,7 @@
       </div>
 
       <p>
-        In conclusion, while C++ offers various avenues for optimizing branch
+        In conclusion, while there are various avenues for optimizing branch
         prediction and cache locality, these strategies should be employed
         carefully. Performance profiling tools can play a vital role in
         identifying performance bottlenecks and directing optimization efforts.
