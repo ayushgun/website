@@ -23,8 +23,8 @@ The branching in this loop depends on the data in `arr[]` and the value of thres
 In a scenario where we know in advance that the majority of elements in `arr[]` are likely to be above `t`, we can rearrange the data such that these elements are placed at the beginning of the array:
 
 ```cpp
-std::sort(arr, arr + n, [t](int a, int b) {
-  return (a > t) == (b > t) ? a < b : a > t;
+std::partition(arr, arr + n, [t](int a) {
+  return a > t;
 });
 
 for (int i = 0; i < n; ++i) {
@@ -34,7 +34,7 @@ for (int i = 0; i < n; ++i) {
 }
 ```
 
-This approach, however, requires prior knowledge about the data and an extra sorting step, which may not be practical or efficient in all cases. Therefore, it should be applied judiciously.
+This approach, however, requires prior knowledge about the data and an extra partitioning step, which may not be practical or efficient in all cases. Therefore, it should be applied judiciously.
 
 ## Cache Locality
 
