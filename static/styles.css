@@ -1,15 +1,20 @@
 @font-face {
-  font-family: "Soehne";
-  src: url(Soehne.ttf);
+  font-family: "Alliance No. 1";
+  src: url(alliance_1.otf);
+}
+
+@font-face {
+  font-family: "Alliance No. 2";
+  src: url(alliance_2.otf);
 }
 
 body {
   align-items: center;
-  background-color: #19191a;
+  background-color: #fafafa;
   box-sizing: border-box;
-  color: #ffffff;
+  color: #333;
   display: flex;
-  font-family: "Soehne", sans-serif;
+  font-family: "Alliance No. 1", sans-serif;
   font-size: 19px;
   font-weight: 200;
   justify-content: center;
@@ -25,26 +30,34 @@ body {
 }
 
 hr {
-  opacity: 10%;
+  opacity: 20%;
 }
 
 h1 {
+  font-family: "Alliance No. 2", sans-serif;
   font-size: 27px;
   font-weight: 500;
   margin-bottom: 1%;
 }
 
 h2 {
+  font-family: "Alliance No. 2", sans-serif;
   font-size: 24px;
   font-weight: 500;
 }
 
 h3 {
-  font-size: 19px;
+  font-family: "Alliance No. 2", sans-serif;
+  font-size: 21px;
   font-weight: 500;
 }
 
-h4,
+h4 {
+  font-family: "Alliance No. 2", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+}
+
 strong {
   font-size: 19px;
   font-weight: 400;
@@ -57,12 +70,17 @@ blockquote {
 
 a {
   text-underline-offset: 2px;
-  color: #a6bed6;
+  color: #4078c0;
+}
+
+a.nav {
+  text-decoration: none;
+  color: #4078c0;
 }
 
 pre {
   border-width: 1px;
   border-style: solid;
-  border-color: #474747;
+  border-color: #d9d7d7;
   padding: 10px;
 }
