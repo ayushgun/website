@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link href="../../static/styles.css" rel="stylesheet" />
+    <link href="../../static/highlights.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="centered-div">
+      <h1>The Parent-Child Relationship in Multithreaded Programming</h1>
+      <blockquote>
+        <p>June 17, 2023</p>
+      </blockquote>
+      <p>
+        In multithreaded programming, a process can spawn multiple threads to
+        perform concurrent operations. The thread that creates (or spawns) a new
+        thread is referred to as the parent thread, while the newly spawned
+        thread is the child thread. It's crucial to note that these terms,
+        parent and child, are primarily conceptual; in reality, all threads
+        within a process share equal status and have access to the process's
+        memory space. The parent-child relationship is a way to describe the
+        initiation sequence of threads, not their hierarchal structure.
+      </p>
+      <p>
+        For instance, in C++, we use the <code>std::thread</code> library to
+        create threads. Consider the following simple code:
+      </p>
+      <div class="codehilite">
+        <pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;thread&gt;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">childTask</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Hello from Child!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Here, the main thread spawns a child thread</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="w"> </span><span class="n">childThread</span><span class="p">(</span><span class="n">childTask</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Hello from Parent!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Parent waits for the child to finish</span>
+<span class="w">    </span><span class="n">childThread</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+      </div>
+
+      <p>
+        In the code above, the <code>main</code> function's thread (the parent)
+        spawns <code>childThread</code> (the child) which runs concurrently with
+        the parent thread.
+      </p>
+      <h2>Inter-thread Communication and Synchronization</h2>
+      <p>
+        Given that all threads within a process share the same memory space,
+        they can communicate by reading and writing to shared variables.
+        However, this leads to the necessity of thread synchronization to avoid
+        data races and inconsistencies.
+      </p>
+      <p>
+        The most common form of synchronization is achieved using locks or
+        mutexes. Here's an example of shared data access with synchronization:
+      </p>
+      <div class="codehilite">
+        <pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;thread&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mutex&gt;</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w"> </span><span class="n">mtx</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">sharedVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">childTask</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">guard</span><span class="p">(</span><span class="n">mtx</span><span class="p">);</span>
+<span class="w">    </span><span class="n">sharedVar</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Child incremented sharedVar to &quot;</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">sharedVar</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="w"> </span><span class="n">childThread</span><span class="p">(</span><span class="n">childTask</span><span class="p">);</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">guard</span><span class="p">(</span><span class="n">mtx</span><span class="p">);</span>
+<span class="w">        </span><span class="n">sharedVar</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Parent incremented sharedVar to &quot;</span>
+<span class="w">                  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">sharedVar</span>
+<span class="w">                  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">childThread</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+      </div>
+
+      <p>
+        In this example, both the parent and child threads increment a shared
+        variable, <code>sharedVar</code>. The mutex <code>mtx</code> ensures
+        that only one thread at a time can increment the variable, preventing
+        data races.
+      </p>
+      <h2>Potential Issues in Parent-Child Thread Management</h2>
+      <p>
+        Without proper management, parent-child thread relationships can run
+        into several issues, including deadlocks, data races, and premature
+        termination of child threads if the parent finishes executing first.
+      </p>
+      <p>
+        Consider the scenario where the parent thread doesn't wait for the child
+        thread to finish its execution, as shown below:
+      </p>
+      <div class="codehilite">
+        <pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;thread&gt;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">childTask</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Child says hello &quot;</span>
+<span class="w">                  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span>
+<span class="w">                  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; times.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="w"> </span><span class="n">childThread</span><span class="p">(</span><span class="n">childTask</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Parent says goodbye.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="cm">/* Parent doesn&#39;t wait for child to finish,</span>
+<span class="cm">    causing undefined behavior. */</span>
+<span class="p">}</span>
+</code></pre>
+      </div>
+
+      <p>
+        In the above scenario, if the parent thread finishes executing before
+        the child, it might lead to the termination of the child thread before
+        its completion, resulting in undefined behavior.
+      </p>
+      <p>
+        To resolve this, C++ provides <code>join()</code> and
+        <code>detach()</code> functions. The <code>join()</code> function makes
+        the parent thread wait for the child thread to finish its execution,
+        ensuring that the child thread's resources are safely reclaimed. The
+        <code>detach()</code> function allows the child thread to execute
+        independently of the parent, ensuring that the child thread's resources
+        will be automatically reclaimed once it finishes execution.
+      </p>
+      <h2>Example in Action</h2>
+      <p>
+        In my personal experience, I recently applied parent-child thread
+        relationships while working with websocket listeners; that very
+        scenario, in fact, inspired me to write this post.
+      </p>
+      <p>
+        While building a real-time research tool built on an in-house limit
+        order book implementation, I needed to use two websocket listeners to
+        get trade detail data and order book data from a cryptocurrency
+        exchange. Each listener had two integral components, both required to
+        run in parallel.
+      </p>
+      <p>
+        Therefore, I created a parent-child relationship between the listeners
+        and their respective components. The setup was achieved by
+        conceptualizing each listener as a parent thread, with its two
+        components as child threads. This allowed each listener to function
+        independently, with their two respective components operating
+        concurrently.
+      </p>
+      <p>
+        <a
+          href="https://mermaid.live/edit#pako:eNqNUk1Pg0AQ_SuTNTGatDHSExxMwGovNj1Q7cH1MGGnsCksze5yqE3_u8tHCTTWeGNn3nsz7zFHlpSCWMBSjfsM1hFXAJv48ZOzlRako7LcwZs0lhRpWGeaUHD2BdMpDBFztMiZqz7BKmpRI4We2Mn_wY9nLbheIZ51TOioZ_GW_74XaMn0g4cjO0Kv1jJiW-qe0LisK5gS3IWb2KHv-x0911yi3pG96n-tUdBDRMZCJAWgEhCakZlQYX4w0vSRvBLaStOiTXucivdf1bMpbxSR1wmNZ7aaTe27dx7Wm-jhKrfwHH_AonaJVpbqIj7vt_i86_EZe8ip-dFbmefBje8nie8PO95Fh01YQbpAKdwxHmskZzajgjgL3Gcu08xyxtXJAbGyZXxQCQusrmjCquYO5hLdERfj4ouQbkMWbDE3rkjNc9mefFKqrUzZ6QcBwvRt"
+          ><img
+            alt=""
+            src="https://mermaid.ink/img/pako:eNqNUk1Pg0AQ_SuTNTGatDHSExxMwGovNj1Q7cH1MGGnsCksze5yqE3_u8tHCTTWeGNn3nsz7zFHlpSCWMBSjfsM1hFXAJv48ZOzlRako7LcwZs0lhRpWGeaUHD2BdMpDBFztMiZqz7BKmpRI4We2Mn_wY9nLbheIZ51TOioZ_GW_74XaMn0g4cjO0Kv1jJiW-qe0LisK5gS3IWb2KHv-x0911yi3pG96n-tUdBDRMZCJAWgEhCakZlQYX4w0vSRvBLaStOiTXucivdf1bMpbxSR1wmNZ7aaTe27dx7Wm-jhKrfwHH_AonaJVpbqIj7vt_i86_EZe8ip-dFbmefBje8nie8PO95Fh01YQbpAKdwxHmskZzajgjgL3Gcu08xyxtXJAbGyZXxQCQusrmjCquYO5hLdERfj4ouQbkMWbDE3rkjNc9mefFKqrUzZ6QcBwvRt?type=png"
+        /></a>
+      </p>
+      <h2>Conclusion</h2>
+      <p>
+        Parent-child relationships can improve code organization and structure,
+        while synchronization mechanisms like mutexes allow safe shared data
+        access. However, improper thread management can lead to data races,
+        deadlocks, or premature termination. Thus, using appropriate
+        synchronization and management techniques is essential in C++
+        multithreaded programming.
+      </p>
+    </div>
+  </body>
+</html>
