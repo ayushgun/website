@@ -83,4 +83,10 @@ pre {
   border-style: solid;
   border-color: #d9d7d7;
   padding: 10px;
+  white-space: pre-wrap;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
