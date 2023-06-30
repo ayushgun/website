@@ -1,4 +1,4 @@
-# The Parent-Child Relationship in Multithreaded Programming
+# Parent-Child Relationships in Multithreaded Programming
 
 > June 17, 2023
 

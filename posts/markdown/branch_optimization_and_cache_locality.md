@@ -6,7 +6,7 @@ High-performance computing has raised the bar for effective hardware resource ma
 
 ## Branch Prediction
 
-Modern processor architectures, in tandem with sophisticated compilers, utilize a mechanism known as **branch prediction** to prefigure the outcome of conditional branches. This foresight can dramatically enhance program execution speed by circumventing pipeline stalls—a situation that occurs when a branch is incorrectly predicted.
+Modern processor architectures, in tandem with sophisticated compilers, utilize a mechanism known as branch prediction to prefigure the outcome of conditional branches. This foresight can dramatically enhance program execution speed by circumventing pipeline stalls—a situation that occurs when a branch is incorrectly predicted.
 
 Consider the following C++ code:
 
@@ -18,7 +18,7 @@ for (int i = 0; i < n; ++i) {
 }
 ```
 
-The branching in this loop depends on the data in `arr[]` and the value of threshold `t`, which can be unpredictable, resulting in erroneous branch prediction and the associated pipeline stalls. This issue can be addressed by reorganizing the data in a way that aligns with the branch prediction logic, a technique known as **branch prediction hinting**.
+The branching in this loop depends on the data in `arr[]` and the value of threshold `t`, which can be unpredictable, resulting in erroneous branch prediction and the associated pipeline stalls. This issue can be addressed by reorganizing the data in a way that aligns with the branch prediction logic, a technique known as branch prediction hinting.
 
 In a scenario where we know in advance that the majority of elements in `arr[]` are likely to be above `t`, we can rearrange the data such that these elements are placed at the beginning of the array:
 
@@ -38,9 +38,9 @@ This approach, however, requires prior knowledge about the data and an extra par
 
 ## Cache Locality
 
-**Cache locality** is a property of a memory reference pattern, where accesses to closely located data are likely to be performed in quick succession. This property manifests in two forms: **spatial locality** and **temporal locality**.
+Cache locality is a property of a memory reference pattern, where accesses to closely located data are likely to be performed in quick succession. This property manifests in two forms: spatial locality and temporal locality.
 
-### Spatial Locality
+## Spatial Locality
 
 Spatial locality implies that accessing data elements stored closely in memory tends to be beneficial due to the block-based data movement strategies of modern memory hierarchies. This principle is particularly relevant when traversing data structures such as arrays.
 
@@ -64,7 +64,7 @@ for (int i = 0; i < rows; ++i) {
 }
 ```
 
-### Temporal Locality
+## Temporal Locality
 
 Temporal locality refers to the tendency of the same memory locations to be accessed within short periods. Consider the following C++ example:
 

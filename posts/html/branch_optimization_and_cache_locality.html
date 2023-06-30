@@ -21,10 +21,10 @@
       <h2>Branch Prediction</h2>
       <p>
         Modern processor architectures, in tandem with sophisticated compilers,
-        utilize a mechanism known as <strong>branch prediction</strong> to
-        prefigure the outcome of conditional branches. This foresight can
-        dramatically enhance program execution speed by circumventing pipeline
-        stalls—a situation that occurs when a branch is incorrectly predicted.
+        utilize a mechanism known as branch prediction to prefigure the outcome
+        of conditional branches. This foresight can dramatically enhance program
+        execution speed by circumventing pipeline stalls—a situation that occurs
+        when a branch is incorrectly predicted.
       </p>
       <p>Consider the following C++ code:</p>
       <div class="codehilite">
@@ -42,7 +42,7 @@
         resulting in erroneous branch prediction and the associated pipeline
         stalls. This issue can be addressed by reorganizing the data in a way
         that aligns with the branch prediction logic, a technique known as
-        <strong>branch prediction hinting</strong>.
+        branch prediction hinting.
       </p>
       <p>
         In a scenario where we know in advance that the majority of elements in
@@ -70,13 +70,12 @@
       </p>
       <h2>Cache Locality</h2>
       <p>
-        <strong>Cache locality</strong> is a property of a memory reference
-        pattern, where accesses to closely located data are likely to be
-        performed in quick succession. This property manifests in two forms:
-        <strong>spatial locality</strong> and
-        <strong>temporal locality</strong>.
+        Cache locality is a property of a memory reference pattern, where
+        accesses to closely located data are likely to be performed in quick
+        succession. This property manifests in two forms: spatial locality and
+        temporal locality.
       </p>
-      <h3>Spatial Locality</h3>
+      <h2>Spatial Locality</h2>
       <p>
         Spatial locality implies that accessing data elements stored closely in
         memory tends to be beneficial due to the block-based data movement
@@ -111,7 +110,7 @@
 </code></pre>
       </div>
 
-      <h3>Temporal Locality</h3>
+      <h2>Temporal Locality</h2>
       <p>
         Temporal locality refers to the tendency of the same memory locations to
         be accessed within short periods. Consider the following C++ example:
