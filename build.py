@@ -1,5 +1,6 @@
 import os
 import subprocess
+from datetime import datetime
 from pathlib import Path
 
 import markdown
@@ -48,16 +49,24 @@ def update_blog_html(md_files_path, html_files):
     div.clear()
 
     # Sort html files by creation time (newest first)
-    md_files_path.sort(key=os.path.getmtime, reverse=True)
+    md_files_path.sort(key=lambda file: file.stat().st_birthtime, reverse=True)
     sorted_html_files = [Path(file).with_suffix(".html").name for file in md_files_path]
 
-    for html_file in sorted_html_files:
+    for md_file_path, html_file in zip(md_files_path, sorted_html_files):
         a = soup.new_tag("a", href=f"posts/html/{html_file}")
 
         # Remove .html extension and format post's name to title case
         post_name = html_file.replace(".html", "").replace("_", " ").title()
         a.string = post_name
         div.append(a)
+
+        # Add the creation date below the title
+        creation_time = md_file_path.stat().st_birthtime
+        date_string = datetime.fromtimestamp(creation_time).strftime("%B %d, %Y")
+        blockquote = soup.new_tag("blockquote")
+        blockquote.string = date_string
+        div.append(blockquote)
+
         div.append(soup.new_tag("br"))
 
     with open("blog.html", "w", encoding="utf-8") as blog_file:
