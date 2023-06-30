@@ -2,7 +2,7 @@
 
 > June 29, 2023
 
-Last summer, I was building a learning management system for my non-profit tutoring startup, [LearnForsyth](https://learnforsyth.org). Initially, the project was small and, like many lazy developers, I thought it would be fine to take a procedural approach. However, as the codebase grew, I faced difficulties in managing the relationships between workspaces, students, and tutors. When I decided to channel my inner [CS 2340](https://gt-student-wiki.org/mediawiki/index.php/CS_2340) and follow the OOP paradigm by refactoring the code into classes and objects, the structure became much clearer and the codebase more maintainable, which was a game-changer for the project.
+Last summer, I was building a learning management system for my non-profit tutoring startup, [LearnForsyth](https://learnforsyth.org). Initially, the project was small and, like many developers, I thought it would be fine to take a procedural approach. However, as the codebase grew, I faced difficulties in managing the relationships between workspaces, students, and tutors. When I decided to channel my inner [CS 2340](https://gt-student-wiki.org/mediawiki/index.php/CS_2340) and follow the OOP paradigm by refactoring the code into classes and objects, the structure became much clearer and the codebase more maintainable, which was a game-changer for the project.
 
 Before delving into why I prefer OOP, let's briefly touch upon Functional Programming (FP). FP is a paradigm where the process of computation is treated as the evaluation of mathematical functions and avoids changing state and mutable data. Here's an example in Haskell, a purely functional language:
 
