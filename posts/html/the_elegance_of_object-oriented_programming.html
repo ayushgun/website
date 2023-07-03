@@ -60,7 +60,9 @@
 <span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">year</span><span class="p">;</span>
 
 <span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="n">Car</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">make</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">year</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">make</span><span class="p">(</span><span class="n">make</span><span class="p">),</span><span class="w"> </span><span class="n">model</span><span class="p">(</span><span class="n">model</span><span class="p">),</span><span class="w"> </span><span class="n">year</span><span class="p">(</span><span class="n">year</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="n">Car</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">make</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">year</span><span class="p">)</span>
+<span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">make</span><span class="p">(</span><span class="n">make</span><span class="p">),</span><span class="w"> </span><span class="n">model</span><span class="p">(</span><span class="n">model</span><span class="p">),</span><span class="w"> </span><span class="n">year</span><span class="p">(</span><span class="n">year</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">}</span>
 
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">honk</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Honk!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
@@ -149,11 +151,11 @@
 
 <span class="k">class</span><span class="w"> </span><span class="nc">ConcreteObserver</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">Observer</span><span class="w"> </span><span class="p">{</span>
 <span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">observerState</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">observer_state</span><span class="p">;</span>
 <span class="k">public</span><span class="o">:</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">update</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">observerState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Observer state updated to &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">observerState</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+<span class="w">        </span><span class="n">observer_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Observer state updated to &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">observer_state</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">};</span>
 
@@ -166,12 +168,12 @@
 <span class="w">        </span><span class="n">observers</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">observer</span><span class="p">);</span>
 <span class="w">    </span><span class="p">}</span>
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">setState</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">newState</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">newState</span><span class="p">;</span>
-<span class="w">        </span><span class="n">notifyObservers</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">set_state</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">new_state</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new_state</span><span class="p">;</span>
+<span class="w">        </span><span class="n">notify_observers</span><span class="p">();</span>
 <span class="w">    </span><span class="p">}</span>
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">notifyObservers</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">notify_observers</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Observer</span><span class="o">*</span><span class="w"> </span><span class="n">observer</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">observers</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="n">observer</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">(</span><span class="n">state</span><span class="p">);</span>
 <span class="w">        </span><span class="p">}</span>

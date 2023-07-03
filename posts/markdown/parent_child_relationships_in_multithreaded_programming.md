@@ -10,17 +10,15 @@ For instance, in C++, we use the `std::thread` library to create threads. Consid
 #include <iostream>
 #include <thread>
 
-void childTask() {
+void child_task() {
     std::cout << "Hello from Child!\n";
 }
 
 int main() {
-    // Here, the main thread spawns a child thread
-    std::thread childThread(childTask);
+    std::thread child_thread(child_task);
     std::cout << "Hello from Parent!\n";
 
-    // Parent waits for the child to finish
-    childThread.join();
+    child_thread.join();
     return 0;
 }
 ```
@@ -39,26 +37,26 @@ The most common form of synchronization is achieved using locks or mutexes. Here
 #include <mutex>
 
 std::mutex mtx;
-int sharedVar = 0;
+int shared_var = 0;
 
-void childTask() {
+void child_task() {
     std::lock_guard<std::mutex> guard(mtx);
-    sharedVar++;
-    std::cout << "Child incremented sharedVar to "
-              << sharedVar
+    shared_var++;
+    std::cout << "Child incremented shared_var to "
+              << shared_var
               << '\n';
 }
 
 int main() {
-    std::thread childThread(childTask);
+    std::thread child_thread(child_task);
     {
         std::lock_guard<std::mutex> guard(mtx);
-        sharedVar++;
-        std::cout << "Parent incremented sharedVar to "
-                  << sharedVar
+        shared_var++;
+        std::cout << "Parent incremented shared_var to "
+                  << shared_var
                   << '\n';
     }
-    childThread.join();
+    child_thread.join();
     return 0;
 }
 ```
@@ -75,7 +73,7 @@ Consider the scenario where the parent thread doesn't wait for the child thread 
 #include <iostream>
 #include <thread>
 
-void childTask() {
+void child_task() {
     for(int i = 0; i < 5; i++)
         std::cout << "Child says hello "
                   << i
@@ -83,7 +81,7 @@ void childTask() {
 }
 
 int main() {
-    std::thread childThread(childTask);
+    std::thread child_thread(child_task);
     std::cout << "Parent says goodbye.\n";
     return 0;
     /* Parent doesn't wait for child to finish,

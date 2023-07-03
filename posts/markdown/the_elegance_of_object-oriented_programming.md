@@ -26,7 +26,9 @@ private:
     int year;
 
 public:
-    Car(std::string make, std::string model, int year) : make(make), model(model), year(year) {}
+    Car(std::string make, std::string model, int year)
+        : make(make), model(model), year(year) {
+    }
 
     void honk() {
         std::cout << "Honk!\n";
@@ -90,11 +92,11 @@ public:
 
 class ConcreteObserver : public Observer {
 private:
-    int observerState;
+    int observer_state;
 public:
     void update(int data) override {
-        observerState = data;
-        std::cout << "Observer state updated to " << observerState << '\n';
+        observer_state = data;
+        std::cout << "Observer state updated to " << observer_state << '\n';
     }
 };
 
@@ -107,12 +109,12 @@ public:
         observers.push_back(observer);
     }
 
-    void setState(int newState) {
-        state = newState;
-        notifyObservers();
+    void set_state(int new_state) {
+        state = new_state;
+        notify_observers();
     }
 
-    void notifyObservers() {
+    void notify_observers() {
         for (Observer* observer : observers) {
             observer->update(state);
         }
