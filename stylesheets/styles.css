@@ -40,7 +40,7 @@ a {
 
 blockquote {
   opacity: 50%;
-  margin-left: 0;
+  margin: 0;
 }
 
 pre {
@@ -50,15 +50,21 @@ pre {
   background-color: #2b313a;
   border-radius: 4px;
   padding: 10px;
-  white-space: pre-wrap;
+  overflow: auto;
   font-size: 17px;
 }
 
-pre code strong,
-pre code b,
-pre code .strong,
-pre code .bold {
-  font-weight: normal;
+/* Styling the scrollbar track */
+pre::-webkit-scrollbar {
+  /* width: 10px; */
+  height: 7px;
+  background-color: #22272d;
+}
+
+/* Styling the scrollbar thumb */
+pre::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: #3e4c5a;
 }
 
 nav a ion-icon {
