@@ -23,9 +23,7 @@ The branching in this loop depends on the data in `arr[]` and the value of thres
 In a scenario where we know in advance that the majority of elements in `arr[]` are likely to be above `t`, we can rearrange the data such that these elements are placed at the beginning of the array:
 
 ```cpp
-std::partition(arr, arr + n, [t](int a) {
-  return a > t;
-});
+std::partition(arr, arr + n, [t](int a) { return a > t; });
 
 for (int i = 0; i < n; ++i) {
     if (arr[i] > t) {

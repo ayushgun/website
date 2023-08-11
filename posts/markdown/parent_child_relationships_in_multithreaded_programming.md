@@ -81,11 +81,12 @@ void child_task() {
 }
 
 int main() {
+    // Example where parent doesn't wait
+    // for child to finish, causing undefined
+    // behavior
     std::thread child_thread(child_task);
     std::cout << "Parent says goodbye.\n";
     return 0;
-    /* Parent doesn't wait for child to finish,
-    causing undefined behavior. */
 }
 ```
 
@@ -101,7 +102,7 @@ While building a real-time research tool built on an in-house limit order book i
 
 Therefore, I created a parent-child relationship between the listeners and their respective components. The setup was achieved by conceptualizing each listener as a parent thread, with its two components as child threads. This allowed each listener to function independently, with their two respective components operating concurrently.
 
-[![](https://mermaid.ink/img/pako:eNqNUk1Pg0AQ_SuTNTGatDHSExxMwGovNj1Q7cH1MGGnsCksze5yqE3_u8tHCTTWeGNn3nsz7zFHlpSCWMBSjfsM1hFXAJv48ZOzlRako7LcwZs0lhRpWGeaUHD2BdMpDBFztMiZqz7BKmpRI4We2Mn_wY9nLbheIZ51TOioZ_GW_74XaMn0g4cjO0Kv1jJiW-qe0LisK5gS3IWb2KHv-x0911yi3pG96n-tUdBDRMZCJAWgEhCakZlQYX4w0vSRvBLaStOiTXucivdf1bMpbxSR1wmNZ7aaTe27dx7Wm-jhKrfwHH_AonaJVpbqIj7vt_i86_EZe8ip-dFbmefBje8nie8PO95Fh01YQbpAKdwxHmskZzajgjgL3Gcu08xyxtXJAbGyZXxQCQusrmjCquYO5hLdERfj4ouQbkMWbDE3rkjNc9mefFKqrUzZ6QcBwvRt?type=png)](https://mermaid.live/edit#pako:eNqNUk1Pg0AQ_SuTNTGatDHSExxMwGovNj1Q7cH1MGGnsCksze5yqE3_u8tHCTTWeGNn3nsz7zFHlpSCWMBSjfsM1hFXAJv48ZOzlRako7LcwZs0lhRpWGeaUHD2BdMpDBFztMiZqz7BKmpRI4We2Mn_wY9nLbheIZ51TOioZ_GW_74XaMn0g4cjO0Kv1jJiW-qe0LisK5gS3IWb2KHv-x0911yi3pG96n-tUdBDRMZCJAWgEhCakZlQYX4w0vSRvBLaStOiTXucivdf1bMpbxSR1wmNZ7aaTe27dx7Wm-jhKrfwHH_AonaJVpbqIj7vt_i86_EZe8ip-dFbmefBje8nie8PO95Fh01YQbpAKdwxHmskZzajgjgL3Gcu08xyxtXJAbGyZXxQCQusrmjCquYO5hLdERfj4ouQbkMWbDE3rkjNc9mefFKqrUzZ6QcBwvRt)
+[![](https://mermaid.ink/img/pako:eNqNUstOwzAQ_JWVpRCQWiHSWw5ICYVeqHpIoRKYw6peWquNXTnOoUT5d5xHrQZRxC3ZzMzuTKZiay2IxSwIKqmkjaEK7ZZyCmMIBZpdCDXUQcAVVxuDhy0sU64AVtndO2cLI8ikWu_gWRaWFBlYbg2h4OwDxmM4R0zRImdueg-LtEMNFDyxl_-Dn006cHNCNumZ0FNP4h3_5SDQUuEXn6_sCV6tY2RWG09oXTYT3BBcJ6vMoW_8jZH7OHcZkb3of2lQ0G1KhYVUCkAlICkGZhKF-2MhCx_JE6EtDc26tIepRP9VPZmKBhFFvdBwZ6fZzr6886S5xJyfcgUP2SvMGpdopVY_4ot-iy-6FB8bsZxMjlK47lWNDmdt7ziL3WPTPM64qh0OS6uzo1qz2JqSRqxsf-lUoutjzuJP3Bd--iik2-aH1L7Ou4a3RR-xA6o3rU_E-hvZnfQI?type=png)](https://mermaid.live/edit#pako:eNqNUstOwzAQ_JWVpRCQWiHSWw5ICYVeqHpIoRKYw6peWquNXTnOoUT5d5xHrQZRxC3ZzMzuTKZiay2IxSwIKqmkjaEK7ZZyCmMIBZpdCDXUQcAVVxuDhy0sU64AVtndO2cLI8ikWu_gWRaWFBlYbg2h4OwDxmM4R0zRImdueg-LtEMNFDyxl_-Dn006cHNCNumZ0FNP4h3_5SDQUuEXn6_sCV6tY2RWG09oXTYT3BBcJ6vMoW_8jZH7OHcZkb3of2lQ0G1KhYVUCkAlICkGZhKF-2MhCx_JE6EtDc26tIepRP9VPZmKBhFFvdBwZ6fZzr6886S5xJyfcgUP2SvMGpdopVY_4ot-iy-6FB8bsZxMjlK47lWNDmdt7ziL3WPTPM64qh0OS6uzo1qz2JqSRqxsf-lUoutjzuJP3Bd--iik2-aH1L7Ou4a3RR-xA6o3rU_E-hvZnfQI)
 
 ## Conclusion
 

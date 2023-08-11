@@ -45,7 +45,7 @@ Polymorphism is another pillar of OOP that allows objects of different classes t
 ```cpp
 class Shape {
 public:
-    virtual void draw() const = 0; // Pure virtual function
+    virtual void draw() const = 0;
 };
 
 class Circle : public Shape {
@@ -67,6 +67,7 @@ With polymorphism, you can create a collection of `Shape` pointers and call the 
 
 ```cpp
 std::vector<Shape*> shapes = {new Circle(), new Square()};
+
 for (Shape* shape : shapes) {
     shape->draw();
 }
@@ -93,10 +94,13 @@ public:
 class ConcreteObserver : public Observer {
 private:
     int observer_state;
+
 public:
     void update(int data) override {
         observer_state = data;
-        std::cout << "Observer state updated to " << observer_state << '\n';
+        std::cout << "Observer state updated to: "
+                  << observer_state
+                  << '\n';
     }
 };
 
@@ -104,6 +108,7 @@ class Subject {
 private:
     std::vector<Observer*> observers;
     int state;
+
 public:
     void attach(Observer* observer) {
         observers.push_back(observer);

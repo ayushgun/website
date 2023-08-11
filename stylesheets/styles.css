@@ -1,0 +1,93 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 18px;
+  line-height: 150%;
+  font-weight: 400;
+  color: #8094a8;
+  background-color: #22272d;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background-color: #3e4c5a;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin-bottom: 1%;
+  font-weight: 400;
+  line-height: 150%;
+  color: #adbac7;
+  font-size: 25px;
+}
+
+h1 {
+  font-size: 28px; /* Override */
+}
+
+a {
+  color: #a173ffd0;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+blockquote {
+  opacity: 50%;
+  margin-left: 0;
+}
+
+pre {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #3e4c5a;
+  background-color: #2b313a;
+  border-radius: 4px;
+  padding: 10px;
+  white-space: pre-wrap;
+  font-size: 17px;
+}
+
+pre code strong,
+pre code b,
+pre code .strong,
+pre code .bold {
+  font-weight: normal;
+}
+
+nav a ion-icon {
+  opacity: 75%;
+  color: #8094a8;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 0 10%;
+}
+
+.content {
+  margin: 20px 0;
+  text-align: left;
+  overflow: auto;
+  max-width: 640px;
+}
+
+.content img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 0 5%;
+  }
+}
