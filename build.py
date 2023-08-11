@@ -5,11 +5,19 @@ from pathlib import Path
 
 import markdown
 from bs4 import BeautifulSoup
+from pygments.formatters import HtmlFormatter
 
 
 def convert_md_to_html(md_file_path, html_file_path):
     with open(md_file_path, "r", encoding="utf-8") as md_file:
         md_content = md_file.read()
+
+    # Use Pygments with the GitHub dark theme
+    formatter = HtmlFormatter(style="github-dark")
+    css_code_highlighting = formatter.get_style_defs(".codehilite")
+
+    # Remove bold styling
+    css_code_highlighting = css_code_highlighting.replace("bold", "normal")
 
     html_content = markdown.markdown(
         md_content, extensions=["fenced_code", "codehilite"]
@@ -17,15 +25,21 @@ def convert_md_to_html(md_file_path, html_file_path):
 
     html_content_wrapped = f"""
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link href="../../static/styles.css" rel="stylesheet" />
-    <link href="../../static/highlights.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../stylesheets/styles.css" />
+    <style>
+      {css_code_highlighting}
+      .codehilite {{ background: transparent; }}
+    </style>
   </head>
   <body>
-    <div class="centered-div">
+    <div class="container">
+      <div class="content">
         {html_content}
+      </div>
     </div>
   </body>
 </html>

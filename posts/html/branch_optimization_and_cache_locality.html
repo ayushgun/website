@@ -1,59 +1,355 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link href="../../static/styles.css" rel="stylesheet" />
-    <link href="../../static/highlights.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../stylesheets/styles.css" />
+    <style>
+      pre {
+        line-height: 125%;
+      }
+      td.linenos .normal {
+        color: #6e7681;
+        background-color: #0d1117;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+      span.linenos {
+        color: #6e7681;
+        background-color: #0d1117;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+      td.linenos .special {
+        color: #e6edf3;
+        background-color: #6e7681;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+      span.linenos.special {
+        color: #e6edf3;
+        background-color: #6e7681;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+      .codehilite .hll {
+        background-color: #6e7681;
+      }
+      .codehilite {
+        background: #0d1117;
+        color: #e6edf3;
+      }
+      .codehilite .c {
+        color: #8b949e;
+        font-style: italic;
+      } /* Comment */
+      .codehilite .err {
+        color: #f85149;
+      } /* Error */
+      .codehilite .esc {
+        color: #e6edf3;
+      } /* Escape */
+      .codehilite .g {
+        color: #e6edf3;
+      } /* Generic */
+      .codehilite .k {
+        color: #ff7b72;
+      } /* Keyword */
+      .codehilite .l {
+        color: #a5d6ff;
+      } /* Literal */
+      .codehilite .n {
+        color: #e6edf3;
+      } /* Name */
+      .codehilite .o {
+        color: #ff7b72;
+        font-weight: normal;
+      } /* Operator */
+      .codehilite .x {
+        color: #e6edf3;
+      } /* Other */
+      .codehilite .p {
+        color: #e6edf3;
+      } /* Punctuation */
+      .codehilite .ch {
+        color: #8b949e;
+        font-style: italic;
+      } /* Comment.Hashbang */
+      .codehilite .cm {
+        color: #8b949e;
+        font-style: italic;
+      } /* Comment.Multiline */
+      .codehilite .cp {
+        color: #8b949e;
+        font-weight: normal;
+        font-style: italic;
+      } /* Comment.Preproc */
+      .codehilite .cpf {
+        color: #8b949e;
+        font-style: italic;
+      } /* Comment.PreprocFile */
+      .codehilite .c1 {
+        color: #8b949e;
+        font-style: italic;
+      } /* Comment.Single */
+      .codehilite .cs {
+        color: #8b949e;
+        font-weight: normal;
+        font-style: italic;
+      } /* Comment.Special */
+      .codehilite .gd {
+        color: #ffa198;
+        background-color: #490202;
+      } /* Generic.Deleted */
+      .codehilite .ge {
+        color: #e6edf3;
+        font-style: italic;
+      } /* Generic.Emph */
+      .codehilite .gr {
+        color: #ffa198;
+      } /* Generic.Error */
+      .codehilite .gh {
+        color: #79c0ff;
+        font-weight: normal;
+      } /* Generic.Heading */
+      .codehilite .gi {
+        color: #56d364;
+        background-color: #0f5323;
+      } /* Generic.Inserted */
+      .codehilite .go {
+        color: #8b949e;
+      } /* Generic.Output */
+      .codehilite .gp {
+        color: #8b949e;
+      } /* Generic.Prompt */
+      .codehilite .gs {
+        color: #e6edf3;
+        font-weight: normal;
+      } /* Generic.Strong */
+      .codehilite .gu {
+        color: #79c0ff;
+      } /* Generic.Subheading */
+      .codehilite .gt {
+        color: #ff7b72;
+      } /* Generic.Traceback */
+      .codehilite .g-Underline {
+        color: #e6edf3;
+        text-decoration: underline;
+      } /* Generic.Underline */
+      .codehilite .kc {
+        color: #79c0ff;
+      } /* Keyword.Constant */
+      .codehilite .kd {
+        color: #ff7b72;
+      } /* Keyword.Declaration */
+      .codehilite .kn {
+        color: #ff7b72;
+      } /* Keyword.Namespace */
+      .codehilite .kp {
+        color: #79c0ff;
+      } /* Keyword.Pseudo */
+      .codehilite .kr {
+        color: #ff7b72;
+      } /* Keyword.Reserved */
+      .codehilite .kt {
+        color: #ff7b72;
+      } /* Keyword.Type */
+      .codehilite .ld {
+        color: #79c0ff;
+      } /* Literal.Date */
+      .codehilite .m {
+        color: #a5d6ff;
+      } /* Literal.Number */
+      .codehilite .s {
+        color: #a5d6ff;
+      } /* Literal.String */
+      .codehilite .na {
+        color: #e6edf3;
+      } /* Name.Attribute */
+      .codehilite .nb {
+        color: #e6edf3;
+      } /* Name.Builtin */
+      .codehilite .nc {
+        color: #f0883e;
+        font-weight: normal;
+      } /* Name.Class */
+      .codehilite .no {
+        color: #79c0ff;
+        font-weight: normal;
+      } /* Name.Constant */
+      .codehilite .nd {
+        color: #d2a8ff;
+        font-weight: normal;
+      } /* Name.Decorator */
+      .codehilite .ni {
+        color: #ffa657;
+      } /* Name.Entity */
+      .codehilite .ne {
+        color: #f0883e;
+        font-weight: normal;
+      } /* Name.Exception */
+      .codehilite .nf {
+        color: #d2a8ff;
+        font-weight: normal;
+      } /* Name.Function */
+      .codehilite .nl {
+        color: #79c0ff;
+        font-weight: normal;
+      } /* Name.Label */
+      .codehilite .nn {
+        color: #ff7b72;
+      } /* Name.Namespace */
+      .codehilite .nx {
+        color: #e6edf3;
+      } /* Name.Other */
+      .codehilite .py {
+        color: #79c0ff;
+      } /* Name.Property */
+      .codehilite .nt {
+        color: #7ee787;
+      } /* Name.Tag */
+      .codehilite .nv {
+        color: #79c0ff;
+      } /* Name.Variable */
+      .codehilite .ow {
+        color: #ff7b72;
+        font-weight: normal;
+      } /* Operator.Word */
+      .codehilite .pm {
+        color: #e6edf3;
+      } /* Punctuation.Marker */
+      .codehilite .w {
+        color: #6e7681;
+      } /* Text.Whitespace */
+      .codehilite .mb {
+        color: #a5d6ff;
+      } /* Literal.Number.Bin */
+      .codehilite .mf {
+        color: #a5d6ff;
+      } /* Literal.Number.Float */
+      .codehilite .mh {
+        color: #a5d6ff;
+      } /* Literal.Number.Hex */
+      .codehilite .mi {
+        color: #a5d6ff;
+      } /* Literal.Number.Integer */
+      .codehilite .mo {
+        color: #a5d6ff;
+      } /* Literal.Number.Oct */
+      .codehilite .sa {
+        color: #79c0ff;
+      } /* Literal.String.Affix */
+      .codehilite .sb {
+        color: #a5d6ff;
+      } /* Literal.String.Backtick */
+      .codehilite .sc {
+        color: #a5d6ff;
+      } /* Literal.String.Char */
+      .codehilite .dl {
+        color: #79c0ff;
+      } /* Literal.String.Delimiter */
+      .codehilite .sd {
+        color: #a5d6ff;
+      } /* Literal.String.Doc */
+      .codehilite .s2 {
+        color: #a5d6ff;
+      } /* Literal.String.Double */
+      .codehilite .se {
+        color: #79c0ff;
+      } /* Literal.String.Escape */
+      .codehilite .sh {
+        color: #79c0ff;
+      } /* Literal.String.Heredoc */
+      .codehilite .si {
+        color: #a5d6ff;
+      } /* Literal.String.Interpol */
+      .codehilite .sx {
+        color: #a5d6ff;
+      } /* Literal.String.Other */
+      .codehilite .sr {
+        color: #79c0ff;
+      } /* Literal.String.Regex */
+      .codehilite .s1 {
+        color: #a5d6ff;
+      } /* Literal.String.Single */
+      .codehilite .ss {
+        color: #a5d6ff;
+      } /* Literal.String.Symbol */
+      .codehilite .bp {
+        color: #e6edf3;
+      } /* Name.Builtin.Pseudo */
+      .codehilite .fm {
+        color: #d2a8ff;
+        font-weight: normal;
+      } /* Name.Function.Magic */
+      .codehilite .vc {
+        color: #79c0ff;
+      } /* Name.Variable.Class */
+      .codehilite .vg {
+        color: #79c0ff;
+      } /* Name.Variable.Global */
+      .codehilite .vi {
+        color: #79c0ff;
+      } /* Name.Variable.Instance */
+      .codehilite .vm {
+        color: #79c0ff;
+      } /* Name.Variable.Magic */
+      .codehilite .il {
+        color: #a5d6ff;
+      } /* Literal.Number.Integer.Long */
+      .codehilite {
+        background: transparent;
+      }
+    </style>
   </head>
   <body>
-    <div class="centered-div">
-      <h1>Branch Prediction Optimization and Cache Locality</h1>
-      <blockquote>
-        <p>May 20, 2023</p>
-      </blockquote>
-      <p>
-        High-performance computing has raised the bar for effective hardware
-        resource management. Two key aspects of this paradigm are branch
-        prediction optimization and cache locality. This blog post delivers a
-        brief analysis of these aspects in relation to C++ programs, complete
-        with examples demonstrating suboptimal and optimal usage patterns.
-      </p>
-      <h2>Branch Prediction</h2>
-      <p>
-        Modern processor architectures, in tandem with sophisticated compilers,
-        utilize a mechanism known as branch prediction to prefigure the outcome
-        of conditional branches. This foresight can dramatically enhance program
-        execution speed by circumventing pipeline stalls—a situation that occurs
-        when a branch is incorrectly predicted.
-      </p>
-      <p>Consider the following C++ code:</p>
-      <div class="codehilite">
-        <pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+    <div class="container">
+      <div class="content">
+        <h1>Branch Prediction Optimization and Cache Locality</h1>
+        <blockquote>
+          <p>May 20, 2023</p>
+        </blockquote>
+        <p>
+          High-performance computing has raised the bar for effective hardware
+          resource management. Two key aspects of this paradigm are branch
+          prediction optimization and cache locality. This blog post delivers a
+          brief analysis of these aspects in relation to C++ programs, complete
+          with examples demonstrating suboptimal and optimal usage patterns.
+        </p>
+        <h2>Branch Prediction</h2>
+        <p>
+          Modern processor architectures, in tandem with sophisticated
+          compilers, utilize a mechanism known as branch prediction to prefigure
+          the outcome of conditional branches. This foresight can dramatically
+          enhance program execution speed by circumventing pipeline stalls—a
+          situation that occurs when a branch is incorrectly predicted.
+        </p>
+        <p>Consider the following C++ code:</p>
+        <div class="codehilite">
+          <pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">process</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
-      </div>
+        </div>
 
-      <p>
-        The branching in this loop depends on the data in <code>arr[]</code> and
-        the value of threshold <code>t</code>, which can be unpredictable,
-        resulting in erroneous branch prediction and the associated pipeline
-        stalls. This issue can be addressed by reorganizing the data in a way
-        that aligns with the branch prediction logic, a technique known as
-        branch prediction hinting.
-      </p>
-      <p>
-        In a scenario where we know in advance that the majority of elements in
-        <code>arr[]</code> are likely to be above <code>t</code>, we can
-        rearrange the data such that these elements are placed at the beginning
-        of the array:
-      </p>
-      <div class="codehilite">
-        <pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">partition</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="n">arr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">t</span><span class="p">](</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
-<span class="p">});</span>
+        <p>
+          The branching in this loop depends on the data in
+          <code>arr[]</code> and the value of threshold <code>t</code>, which
+          can be unpredictable, resulting in erroneous branch prediction and the
+          associated pipeline stalls. This issue can be addressed by
+          reorganizing the data in a way that aligns with the branch prediction
+          logic, a technique known as branch prediction hinting.
+        </p>
+        <p>
+          In a scenario where we know in advance that the majority of elements
+          in <code>arr[]</code> are likely to be above <code>t</code>, we can
+          rearrange the data such that these elements are placed at the
+          beginning of the array:
+        </p>
+        <div class="codehilite">
+          <pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">partition</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="n">arr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">t</span><span class="p">](</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">;</span><span class="w"> </span><span class="p">});</span>
 
 <span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -61,62 +357,63 @@
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
-      </div>
+        </div>
 
-      <p>
-        This approach, however, requires prior knowledge about the data and an
-        extra partitioning step, which may not be practical or efficient in all
-        cases. Therefore, it should be applied judiciously.
-      </p>
-      <h2>Cache Locality</h2>
-      <p>
-        Cache locality is a property of a memory reference pattern, where
-        accesses to closely located data are likely to be performed in quick
-        succession. This property manifests in two forms: spatial locality and
-        temporal locality.
-      </p>
-      <h2>Spatial Locality</h2>
-      <p>
-        Spatial locality implies that accessing data elements stored closely in
-        memory tends to be beneficial due to the block-based data movement
-        strategies of modern memory hierarchies. This principle is particularly
-        relevant when traversing data structures such as arrays.
-      </p>
-      <p>
-        Consider this example where a 2D array is traversed in column-major
-        order:
-      </p>
-      <div class="codehilite">
-        <pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">cols</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+        <p>
+          This approach, however, requires prior knowledge about the data and an
+          extra partitioning step, which may not be practical or efficient in
+          all cases. Therefore, it should be applied judiciously.
+        </p>
+        <h2>Cache Locality</h2>
+        <p>
+          Cache locality is a property of a memory reference pattern, where
+          accesses to closely located data are likely to be performed in quick
+          succession. This property manifests in two forms: spatial locality and
+          temporal locality.
+        </p>
+        <h2>Spatial Locality</h2>
+        <p>
+          Spatial locality implies that accessing data elements stored closely
+          in memory tends to be beneficial due to the block-based data movement
+          strategies of modern memory hierarchies. This principle is
+          particularly relevant when traversing data structures such as arrays.
+        </p>
+        <p>
+          Consider this example where a 2D array is traversed in column-major
+          order:
+        </p>
+        <div class="codehilite">
+          <pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">cols</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">rows</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
-      </div>
+        </div>
 
-      <p>
-        This traversal pattern can result in frequent cache misses, negatively
-        impacting performance. A more efficient approach is to traverse in
-        row-major order, aligning with the row-major storage of multidimensional
-        arrays in C++:
-      </p>
-      <div class="codehilite">
-        <pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">rows</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+        <p>
+          This traversal pattern can result in frequent cache misses, negatively
+          impacting performance. A more efficient approach is to traverse in
+          row-major order, aligning with the row-major storage of
+          multidimensional arrays in C++:
+        </p>
+        <div class="codehilite">
+          <pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">rows</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">cols</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
-      </div>
+        </div>
 
-      <h2>Temporal Locality</h2>
-      <p>
-        Temporal locality refers to the tendency of the same memory locations to
-        be accessed within short periods. Consider the following C++ example:
-      </p>
-      <div class="codehilite">
-        <pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+        <h2>Temporal Locality</h2>
+        <p>
+          Temporal locality refers to the tendency of the same memory locations
+          to be accessed within short periods. Consider the following C++
+          example:
+        </p>
+        <div class="codehilite">
+          <pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
 <span class="p">}</span>
 
@@ -124,31 +421,32 @@
 <span class="w">    </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">func</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
 <span class="p">}</span>
 </code></pre>
-      </div>
+        </div>
 
-      <p>
-        In this example, <code>arr[i]</code> is accessed twice, with a
-        substantial interval between the two accesses, which could lead to cache
-        eviction in between, negatively impacting temporal locality. A better
-        approach would be to minimize the interval between accesses to the same
-        memory location:
-      </p>
-      <div class="codehilite">
-        <pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+        <p>
+          In this example, <code>arr[i]</code> is accessed twice, with a
+          substantial interval between the two accesses, which could lead to
+          cache eviction in between, negatively impacting temporal locality. A
+          better approach would be to minimize the interval between accesses to
+          the same memory location:
+        </p>
+        <div class="codehilite">
+          <pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">func</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre>
-      </div>
+        </div>
 
-      <p>
-        In conclusion, while there are various avenues for optimizing branch
-        prediction and cache locality, these strategies should be employed
-        carefully. Performance profiling tools can play a vital role in
-        identifying performance bottlenecks and directing optimization efforts.
-        Always remember that the overhead of optimization should not undermine
-        the benefits in terms of increased complexity or diminished code
-        readability.
-      </p>
+        <p>
+          In conclusion, while there are various avenues for optimizing branch
+          prediction and cache locality, these strategies should be employed
+          carefully. Performance profiling tools can play a vital role in
+          identifying performance bottlenecks and directing optimization
+          efforts. Always remember that the overhead of optimization should not
+          undermine the benefits in terms of increased complexity or diminished
+          code readability.
+        </p>
+      </div>
     </div>
   </body>
 </html>
