@@ -61,11 +61,17 @@ def update_blog_html(md_files_path, html_files):
     div = soup.find(id="post-links")
     div.clear()
 
-    # Sort html files by creation time (newest first)
-    md_files_path.sort(key=lambda file: file.stat().st_birthtime, reverse=True)
-    sorted_html_files = [Path(file).with_suffix(".html").name for file in md_files_path]
+    # Create a list of tuples containing the md_file_path, html_file, and date
+    post_data = []
+    for md_file_path, html_file in zip(md_files_path, html_files):
+        with open(md_file_path, "r", encoding="utf-8") as md_file:
+            date_string = md_file.readlines()[2].strip().replace("> ", "")
+        post_data.append((md_file_path, html_file, date_string))
 
-    for md_file_path, html_file in zip(md_files_path, sorted_html_files):
+    # Sort post_data by date (newest first)
+    post_data.sort(key=lambda x: datetime.strptime(x[2], "%B %d, %Y"), reverse=True)
+
+    for md_file_path, html_file, date_string in post_data:
         a = soup.new_tag("a", href=f"posts/html/{html_file}")
 
         # Remove .html extension and format post's name to title case
@@ -74,8 +80,6 @@ def update_blog_html(md_files_path, html_files):
         div.append(a)
 
         # Add the creation date below the title
-        creation_time = md_file_path.stat().st_birthtime
-        date_string = datetime.fromtimestamp(creation_time).strftime("%B %d, %Y")
         blockquote = soup.new_tag("blockquote")
         blockquote.string = date_string
         div.append(blockquote)

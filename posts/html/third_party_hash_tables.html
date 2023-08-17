@@ -423,17 +423,17 @@
           These statistics are indicative and may vary based on the specific use
           case and data distribution.
         </p>
-        <h2>Conclusion</h2>
+        <h2>Summary</h2>
         <p>
           Each third-party HashMap offers unique performance characteristics.
           Google's Dense HashMap provides speed and memory efficiency, suitable
-          for applications like high-frequency trading (HFT) systems. Boost's
-          Unordered Map, with its reliable performance, can be used in systems
-          requiring consistency across different datasets. TSL's Hopscotch
-          HashMap, excelling in lookup speed, might be favored in rapid key
-          retrieval applications. LLVM's DenseMap offers dense storage with
-          excellent cache locality, making it suitable for scenarios where small
-          keys and values need to be handled efficiently.
+          for applications like low-latency trading systems. Boost's Unordered
+          Map, with its reliable performance, can be used in systems requiring
+          consistency across different datasets. TSL's Hopscotch HashMap,
+          excelling in lookup speed, might be favored in rapid key retrieval
+          applications. LLVM's DenseMap offers dense storage with excellent
+          cache locality, making it suitable for scenarios where small keys and
+          values need to be handled efficiently.
         </p>
         <p>
           For an HFT system, where nanosecond-level latency can be critical,
