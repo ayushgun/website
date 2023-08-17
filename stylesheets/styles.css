@@ -7,6 +7,7 @@ body {
   line-height: 150%;
   font-weight: 400;
   color: #8094a8;
+  /* color: #adbac7; */
   background-color: #22272d;
 }
 
@@ -52,6 +53,12 @@ pre {
   padding: 10px;
   overflow: auto;
   font-size: 17px;
+}
+
+:not(pre) > code {
+  padding: 3px;
+  border-radius: 8px;
+  background-color: #2b313a;
 }
 
 /* Styling the scrollbar track */

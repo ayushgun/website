@@ -11,7 +11,7 @@ def convert_md_to_html(md_file_path, html_file_path):
     with open(md_file_path, "r", encoding="utf-8") as md_file:
         md_content = md_file.read()
 
-    # Use Pygments with the GitHub dark theme
+    # Use Pygments with the dark theme
     formatter = HtmlFormatter(style="github-dark")
     css_code_highlighting = formatter.get_style_defs(".codehilite")
 
