@@ -318,11 +318,11 @@
           popular third-party HashMap implementations, as well as their specific
           use-cases.
         </p>
-        <h2>Google's Dense HashMap</h2>
+        <h2>Google Dense HashMap</h2>
         <p>
-          Google's Dense HashMap is designed for memory efficiency. It leverages
-          open addressing with quadratic probing to minimize the memory
-          footprint. This dense packing of elements reduces cache misses,
+          <code>google::dense_hash_map</code> is designed for memory efficiency.
+          It leverages open addressing with quadratic probing to minimize the
+          memory footprint. This dense packing of elements reduces cache misses,
           accelerating lookup operations.
         </p>
         <div class="codehilite">
@@ -341,9 +341,9 @@
         </p>
         <h2>Boost Unordered Map</h2>
         <p>
-          Boost's Unordered Map uses separate chaining to manage collisions.
-          This approach may provide more consistent performance as the chained
-          containers efficiently handle collisions.
+          <code>boost::unordered_map</code> uses separate chaining to manage
+          collisions. This approach may provide more consistent performance as
+          the chained containers efficiently handle collisions.
         </p>
         <div class="codehilite">
           <pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;boost/unordered_map.hpp&gt;</span>
@@ -361,8 +361,8 @@
         </p>
         <h2>TSL Hopscotch HashMap</h2>
         <p>
-          TSL's Hopscotch HashMap employs hopscotch hashing, aiming to achieve
-          high clustering to reduce the average probing sequence length.
+          <code>tsl::hopscotch_map</code> employs hopscotch hashing, aiming to
+          achieve high clustering to reduce the average probing sequence length.
         </p>
         <div class="codehilite">
           <pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;tsl/hopscotch_map.h&gt;</span>
@@ -380,27 +380,26 @@
         </p>
         <h2>LLVM's HashMap</h2>
         <p>
-          LLVM's HashMap, also known as <code>llvm::DenseMap</code>, is
-          optimized for situations where the keys and values are small and cheap
-          to move. It provides excellent cache locality and minimal memory
-          overhead.
+          <code>llvm::DenseMap</code> is optimized for situations where the keys
+          and values are small and cheap to move. It provides excellent cache
+          locality and minimal memory overhead.
         </p>
         <div class="codehilite">
           <pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;llvm/ADT/DenseMap.h&gt;</span>
 
-<span class="n">llvm</span><span class="o">::</span><span class="n">DenseMap</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">map</span><span class="p">;</span>
+<span class="n">llvm</span><span class="o">::</span><span class="n">DenseMap</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="p">.</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">map</span><span class="p">;</span>
 <span class="n">map</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;one&quot;</span><span class="p">;</span>
 </code></pre>
         </div>
 
         <p>
           The main advantage of this implementation is the dense storage,
-          similar to Google's Dense HashMap, which reduces memory overhead. The
-          trade-off is that <code>llvm::DenseMap</code> might suffer from
-          performance degradation when handling a large number of collisions,
-          especially when resizing.
+          similar to <code>google::dense_hash_map</code>, which reduces memory
+          overhead. The trade-off is that <code>llvm::DenseMap</code> might
+          suffer from performance degradation when handling a large number of
+          collisions, especially when resizing.
         </p>
-        <h2>Benchmarks and Statistics</h2>
+        <h2>Benchmarks</h2>
         <p>
           Here are some benchmark results that demonstrate the relative
           performance of these implementations:

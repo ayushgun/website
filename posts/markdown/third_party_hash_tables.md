@@ -4,9 +4,9 @@
 
 HashMaps, or hash tables, are key-value data structures that allow efficient insertion, deletion, and lookup operations. While the C++ Standard Library provides an unordered map, there are several third-party options that offer different advantages and disadvantages. I wanted to write a short post where I discuss my exploration of a few popular third-party HashMap implementations, as well as their specific use-cases.
 
-## Google's Dense HashMap
+## Google Dense HashMap
 
-Google's Dense HashMap is designed for memory efficiency. It leverages open addressing with quadratic probing to minimize the memory footprint. This dense packing of elements reduces cache misses, accelerating lookup operations.
+`google::dense_hash_map` is designed for memory efficiency. It leverages open addressing with quadratic probing to minimize the memory footprint. This dense packing of elements reduces cache misses, accelerating lookup operations.
 
 ```cpp
 #include <sparsehash/dense_hash_map>
@@ -20,7 +20,7 @@ However, the dense nature can lead to longer sequences of probing when collision
 
 ## Boost Unordered Map
 
-Boost's Unordered Map uses separate chaining to manage collisions. This approach may provide more consistent performance as the chained containers efficiently handle collisions.
+`boost::unordered_map` uses separate chaining to manage collisions. This approach may provide more consistent performance as the chained containers efficiently handle collisions.
 
 ```cpp
 #include <boost/unordered_map.hpp>
@@ -33,7 +33,7 @@ The downside is the additional memory overhead for storing linked structures, le
 
 ## TSL Hopscotch HashMap
 
-TSL's Hopscotch HashMap employs hopscotch hashing, aiming to achieve high clustering to reduce the average probing sequence length.
+`tsl::hopscotch_map` employs hopscotch hashing, aiming to achieve high clustering to reduce the average probing sequence length.
 
 ```cpp
 #include <tsl/hopscotch_map.h>
@@ -46,18 +46,18 @@ This design often results in faster average lookup times. However, the trade-off
 
 ## LLVM's HashMap
 
-LLVM's HashMap, also known as `llvm::DenseMap`, is optimized for situations where the keys and values are small and cheap to move. It provides excellent cache locality and minimal memory overhead.
+`llvm::DenseMap` is optimized for situations where the keys and values are small and cheap to move. It provides excellent cache locality and minimal memory overhead.
 
 ```cpp
 #include <llvm/ADT/DenseMap.h>
 
-llvm::DenseMap<int, std::string> map;
+llvm::DenseMap<int, std.string> map;
 map[1] = "one";
 ```
 
-The main advantage of this implementation is the dense storage, similar to Google's Dense HashMap, which reduces memory overhead. The trade-off is that `llvm::DenseMap` might suffer from performance degradation when handling a large number of collisions, especially when resizing.
+The main advantage of this implementation is the dense storage, similar to `google::dense_hash_map`, which reduces memory overhead. The trade-off is that `llvm::DenseMap` might suffer from performance degradation when handling a large number of collisions, especially when resizing.
 
-## Benchmarks and Statistics
+## Benchmarks
 
 Here are some benchmark results that demonstrate the relative performance of these implementations:
 
