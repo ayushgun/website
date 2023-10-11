@@ -1,12 +1,12 @@
-# What exactly is `std::tuple` in C++?
+# A Curious Container
 
 > May 20, 2023
 
-`std::tuple`, introduced in C++11, is quite an interesting container.
+`std::tuple`, introduced in C++11, is one of the most interesting containers available in the STL.
 
 Why? It doesn't adhere to the conventional traits of STL containers. It’s a curious mix of being type agnostic, stack allocated, and distinctively different in its interface.
 
-## A Curious Container
+## What exactly is `std::tuple`?
 
 Formally, `std::tuple` is a template class with an ability to encapsulate a collection of heterogeneous values, each potentially of a different type, fixed in size. It’s particularly invaluable when there’s a need to return multiple values from a function, or when dealing with complex data manipulations involving mixed types.
 
