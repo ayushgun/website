@@ -371,8 +371,7 @@
           numbers.
         </p>
         <div class="codehilite">
-          <pre><span></span><code><span class="c1">// helpers</span>
-<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+          <pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
 <span class="k">struct</span><span class="w"> </span><span class="nc">id</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
 
 <span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
@@ -390,7 +389,7 @@
           elements within our tuple.
         </p>
         <div class="codehilite">
-          <pre><span></span><code><span class="c1">// choose N-th element in list &lt;T...&gt;</span>
+          <pre><span></span><code><span class="c1">// Choose the N-th element in list &lt;T...&gt;</span>
 <span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span>
 <span class="k">struct</span><span class="w"> </span><span class="nc">Choose</span><span class="p">;</span>
 
@@ -425,7 +424,7 @@
           direct access.
         </p>
         <div class="codehilite">
-          <pre><span></span><code><span class="c1">// single tuple element</span>
+          <pre><span></span><code><span class="c1">// Represents a single tuple element</span>
 <span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">TupleElem</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">T</span><span class="w"> </span><span class="n">elem</span><span class="p">;</span>
@@ -443,13 +442,11 @@
           <code>get</code> method.
         </p>
         <div class="codehilite">
-          <pre><span></span><code><span class="c1">// tuple implementation</span>
-<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">N</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span>
+          <pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">N</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">TupleImpl</span><span class="p">;</span>
 
 <span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">...</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">TupleImpl</span><span class="o">&lt;</span><span class="n">sizes</span><span class="o">&lt;</span><span class="n">N</span><span class="p">...</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">TupleElem</span><span class="o">&lt;</span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="p">...</span>
-<span class="p">{</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TupleImpl</span><span class="o">&lt;</span><span class="n">sizes</span><span class="o">&lt;</span><span class="n">N</span><span class="p">...</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">TupleElem</span><span class="o">&lt;</span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">M</span><span class="o">&gt;</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">pick</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">choose</span><span class="o">&lt;</span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">...</span><span class="o">&gt;</span><span class="p">;</span>
 <span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">M</span><span class="o">&gt;</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TupleElem</span><span class="o">&lt;</span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">pick</span><span class="o">&lt;</span><span class="n">M</span><span class="o">&gt;&gt;</span><span class="p">;</span>
 
@@ -462,8 +459,7 @@
 <span class="p">};</span>
 
 <span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">Tuple</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">TupleImpl</span><span class="o">&lt;</span><span class="n">range</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">...(</span><span class="n">T</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">...</span><span class="o">&gt;</span>
-<span class="p">{</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">Tuple</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">TupleImpl</span><span class="o">&lt;</span><span class="n">range</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">...(</span><span class="n">T</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="nf">size</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">sizeof</span><span class="p">...(</span><span class="n">T</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
 <span class="p">};</span>
 </code></pre>
