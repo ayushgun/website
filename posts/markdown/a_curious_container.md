@@ -75,7 +75,7 @@ struct Choose<0, H, T...> : id<H> {};
 template <size_t N, typename... T>
 using choose = type_of<Choose<N, T...>>;
 
-// given L>=0, generate sequence <0, ..., L-1>
+// Given L >= 0, generate sequence <0, ..., L - 1>
 template <size_t L, size_t I = 0, typename S = sizes<> >
 struct Range;
 
