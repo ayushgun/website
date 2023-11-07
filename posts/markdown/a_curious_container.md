@@ -34,9 +34,9 @@ Fundamentally, under the hood, `std::tuple` can be thought of being directly tra
 ```cpp
 std::tuple<int, std::string> t{1, "Hello World"};
 
-// is equivalent to...
+// is roughly equivalent to...
 
-struct tuple {
+struct Tuple {
     int element_1{1};
     std::string element_2{"Hello World"};
 };
@@ -95,8 +95,7 @@ With the foundational templates at our disposal, constructing the tuple becomes 
 ```cpp
 // single tuple element
 template <size_t N, typename T>
-class TupleElem
-{
+class TupleElem {
     T elem;
 public:
     T& get() { return elem; }
@@ -112,8 +111,7 @@ template <typename N, typename... T>
 class TupleImpl;
 
 template <size_t... N, typename... T>
-class TupleImpl<sizes<N...>, T...> : public TupleElem<N, T>...
-{
+class TupleImpl<sizes<N...>, T...> : public TupleElem<N, T...> {
     template <size_t M> using pick = choose<M, T...>;
     template <size_t M> using elem = TupleElem<M, pick<M>>;
 
@@ -126,8 +124,7 @@ public:
 };
 
 template <typename... T>
-struct Tuple : TupleImpl<range<sizeof...(T)>, T...>
-{
+struct Tuple : TupleImpl<range<sizeof...(T)>, T...> {
     static constexpr std::size_t size() { return sizeof...(T); }
 };
 ```
