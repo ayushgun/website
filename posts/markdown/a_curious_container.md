@@ -49,7 +49,6 @@ To unravel the nuances and intricacies of `std::tuple`, let's delve deeper into 
 We initiate our journey with helper templates. These helpers, though succinct, play a pivotal role in unraveling the complexity of `std::tuple`. Take, for instance, the `id` and `type_of` templates, instrumental for type manipulations, or the `sizes` template, used for generating sequences of numbers.
 
 ```cpp
-// helpers
 template <typename T>
 struct id { using type = T; };
 
@@ -63,7 +62,7 @@ struct sizes : id<sizes<N...>> {};
 The `Choose` template enables the selection of the N-th element from a type list, while `Range` generates a sequence of numbers, a mechanism pivotal for indexing and accessing elements within our tuple.
 
 ```cpp
-// choose N-th element in list <T...>
+// Choose the N-th element in list <T...>
 template <size_t N, typename... T>
 struct Choose;
 
@@ -93,7 +92,7 @@ using range = type_of<Range<L>>;
 With the foundational templates at our disposal, constructing the tuple becomes elegant and efficient. The `TupleElem` class template ensures each element is encapsulated with its index, enabling direct access.
 
 ```cpp
-// single tuple element
+// Represents a single tuple element
 template <size_t N, typename T>
 class TupleElem {
     T elem;
@@ -106,7 +105,6 @@ public:
 The `TupleImpl` class template leverages multiple inheritance and variadic templates to encapsulate each element within the tuple, each uniquely accessible through its index, thanks to the `get` method.
 
 ```cpp
-// tuple implementation
 template <typename N, typename... T>
 class TupleImpl;
 
