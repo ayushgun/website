@@ -2,7 +2,7 @@
 
 > March 26, 2024
 
-When working with contiguous containers in C++, such as `std::vector`, it's common to use bounds-checked interfaces like the `at()` member function to ensure safety from undefined behavior or undesirable side effects. However, these interfaces come with a trade-off: they introduce a run-time penalty due to the necessity of checking bounds at run-time. Moreover, they rely on exceptions to signal out-of-bounds access, further adding overhead.
+When working with random access containers in C++, such as `std::vector`, it's common to use bounds-checked interfaces like the `at()` member function to ensure safety from undefined behavior or undesirable side effects. However, these interfaces come with a trade-off: they introduce a run-time penalty due to the necessity of checking bounds at run-time. Moreover, they rely on exceptions to signal out-of-bounds access, further adding overhead.
 
 ## Current Bounds Checking
 
@@ -16,11 +16,11 @@ void foo(const std::array<int, 10>& array) {
 
 In this case, the compiler knows that the array always has ten elements, and we're asking for the element at index zero. Therefore, it knows that it can remove the bounds check and unconditionally return the first element of the array.
 
-Similarly, when the bounds check is certain to fail, the compiler can generate code that unconditionally throws an exception:
+Similarly, when the bounds check is certain to fail, the compiler can generate code that [unconditionally throws an exception](https://godbolt.org/z/94K457E7x):
 
 ```cpp
 void bar(const std::array<int, 10>& array) {
-  std::cout << array.at(10) << '\n';  // throws std::out_of_range
+  std::cout << array.at(10) << '\n';  // std::out_of_range(...)
 }
 ```
 
@@ -51,23 +51,23 @@ void bounds_check(IndexType index, IndexType limit) {
 
 ## Generic Interfaces
 
-If we use concepts, we can generalize our compile-time bounds checked interface to any [contiguous container](https://en.cppreference.com/w/cpp/named_req/ContiguousContainer):
+If we use concepts, we can generalize our compile-time bounds checked interface to any [random access container](https://en.cppreference.com/w/cpp/named_req/RandomAccessIterator):
 
 ```cpp
 template <typename Container>
-concept ContiguousContainer = requires(Container c, std::size_t i) {
-  { c[i] } -> std::convertible_to<typename Container::value_type>;
-  { c.data() } -> std::convertible_to<typename Container::value_type*>;
+concept IndexedContainer = requires(Container container, std::size_t index) {
+  container[index];
+  { container.size() } -> std::same_as<std::size_t>;
 };
 
-template <ContiguousContainer Container>
-typename Container::value_type& get(Container& container, std::size_t idx) {
-  bounds_check(idx, container.size());
-  return container[idx];
+template <IndexedContainer Container>
+decltype(auto) get(const Container&& container, std::size_t index) {
+  bounds_check(index, container.size());
+  return std::forward<Container>(container)[index];
 }
 ```
 
-This allows us to use the get function with any container that satisfies the `ContiguousContainer` concept:
+This allows us to use the `get` function with any container that satisfies the `IndexedContainer` concept:
 
 ```cpp
 std::string msg = "Hello";
