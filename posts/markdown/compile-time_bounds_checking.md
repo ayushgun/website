@@ -61,7 +61,7 @@ concept IndexedContainer = requires(Container container, std::size_t index) {
 };
 
 template <IndexedContainer Container>
-decltype(auto) get(const Container&& container, std::size_t index) {
+decltype(auto) get(Container&& container, std::size_t index) {
   bounds_check(index, container.size());
   return std::forward<Container>(container)[index];
 }
