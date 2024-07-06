@@ -2,17 +2,11 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  font-size: 18px;
+  font-size: 10pt;
   line-height: 150%;
   font-weight: 400;
-  color: #8094a8;
-  background-color: #0D1117;
-}
-
-hr {
-  border: 0;
-  height: 1px;
-  background-color: #3e4c5a;
+  color: #c5c5c5;
+  background-color: #0c0c0c;
 }
 
 h1,
@@ -23,18 +17,19 @@ h5 {
   margin-bottom: 1%;
   font-weight: 400;
   line-height: 150%;
-  color: #adbac7;
-  font-size: 25px;
+  color: #c5c5c5;
+  font-size: 10pt;
+  font-weight: bold;
 }
 
 h1 {
-  font-size: 28px; /* Override */
+  font-weight: bold;
+  font-size: 12pt; /* Override */
 }
 
 a {
-  color: #cba6f7;
-  font-weight: 500;
-  text-decoration: none;
+  color: #fff;
+  /* text-decoration: none; */
 }
 
 blockquote {
@@ -45,18 +40,18 @@ blockquote {
 pre {
   border-width: 1px;
   border-style: solid;
-  border-color: #161B22;
-  background-color: #161B22;
+  border-color: #202020;
+  background-color: #202020;
   border-radius: 4px;
   padding: 10px;
   overflow: auto;
-  font-size: 17px;
+  font-size: 10pt;
 }
 
 :not(pre) > code {
-  padding: 4px;
-  border-radius: 5px;
-  background-color: #161B22;
+  padding: 2px;
+  border-radius: 2px;
+  background-color: #202020;
 }
 
 /* Styling the scrollbar track */
@@ -89,7 +84,7 @@ nav a ion-icon {
   margin: 20px 0;
   text-align: left;
   overflow: auto;
-  max-width: 640px;
+  max-width: 600px;
 }
 
 .content img {

@@ -12,7 +12,7 @@ def convert_md_to_html(md_file_path, html_file_path):
         md_content = md_file.read()
 
     # Use Pygments with the dark theme
-    formatter = HtmlFormatter(style="one-dark")
+    formatter = HtmlFormatter(style="nord")
     css_code_highlighting = formatter.get_style_defs(".codehilite")
 
     # Remove bold styling
