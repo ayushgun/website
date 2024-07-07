@@ -307,171 +307,115 @@
           <p>May 20, 2023</p>
         </blockquote>
         <p>
-          <code>std::tuple</code>, introduced in C++11, is one of the most
-          interesting containers available in the standard library.
+          <code>std::tuple</code>, introduced in C++11, is a distinctive
+          container in the standard library. Unlike traditional STL containers,
+          it is type-flexible, stack-allocated, and has a notably unique
+          interface.
         </p>
-        <p>
-          Why? <code>std::tuple</code> defies traditional STL container
-          characteristics with its unique features like being type-flexible,
-          stack-allocated, and having a distinct interface.
-        </p>
-        <h2>What exactly is <code>std::tuple</code>?</h2>
+        <h2>Tuple Overview</h2>
         <p>
           Formally, <code>std::tuple</code> is a templated class that
           encapsulates a fixed-size collection of heterogeneous values, each
-          potentially of a different type. It shines in scenarios requiring
-          multiple return values from a function or in complex data operations
-          involving varied types.
+          potentially of a different type. It is particularly useful for generic
+          operations, such as returning multiple values from a function or
+          storing function parameters for delayed execution.
         </p>
         <p>
           Contrasting with contiguous containers like
           <code>std::vector</code> or <code>std::array</code>,
           <code>std::tuple</code> lacks a subscript operator for index-based
-          access. Instead, its type-flexible nature demands element access via
-          <code>std::get&lt;I&gt;</code>, which uses a template argument to
-          specify the element's index.
+          access. Instead, it overloads <code>std::get</code> to expose tuple
+          elements by requiring the caller to provide an element's index via a
+          template argument.
         </p>
+        <p>For example, to access the first element in a tuple:</p>
         <div class="codehilite">
-          <pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;tuple&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
-
-<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mf">4.5</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Hello World&quot;</span><span class="p">};</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span><span class="w"> </span><span class="c1">// prints 1 to stdout</span>
-<span class="p">}</span>
+          <pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mf">4.25</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Hello World&quot;</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span>
 </code></pre>
         </div>
 
-        <h2>A Closer Examination</h2>
+        <h2>Closer Examination</h2>
         <p>So why is <code>std::tuple</code> so unique as a container?</p>
         <p>
           <code>std::tuple</code> stands out due to its extensive use of
-          template metaprogramming, which in this case, improves type safety and
-          enables stack allocation. Functions like
-          <code>std::get&lt;I&gt;</code> utilize compile-time type and index
-          deduction. Recursive template instantiation and specialization
-          facilitate safe and unique operations on the tuple's elements.
-        </p>
-        <p>
-          Internally, <code>std::tuple</code> can be analogized to a struct.
+          template metaprogramming to store heterogeneous types. Informally,
+          <code>std::tuple</code> can be analogized to a struct:
         </p>
         <div class="codehilite">
-          <pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Hello World&quot;</span><span class="p">};</span>
+          <pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
 
-<span class="c1">// is roughly equivalent to...</span>
+<span class="c1">// is roughly equal to:</span>
 
-<span class="k">struct</span><span class="w"> </span><span class="nc">Tuple</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">element_1</span><span class="p">{</span><span class="mi">1</span><span class="p">};</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">element_2</span><span class="p">{</span><span class="s">&quot;Hello World&quot;</span><span class="p">};</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">tuple</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value_1</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">value_2</span><span class="p">;</span>
+<span class="w"> </span><span class="p">...</span>
 <span class="p">};</span>
 </code></pre>
         </div>
 
         <h2>Looking Under The Hood</h2>
         <p>
-          Let's examine a simplified <code>std::tuple</code> implementation.
+          Let's examine a C++ tuple implementation. For simplicity's sake, this
+          implementation will only hold unique types (i.e., two objects of the
+          same type are not allowed) and will not consider move semantics.
         </p>
         <p>
-          We start with foundational templates, which are crucial for type
-          manipulations and sequence generation.
+          We begin with a minimal wrapper around an object of type
+          <code>T</code>:
         </p>
         <div class="codehilite">
-          <pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Type</span><span class="o">&gt;</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">Identifier</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Type</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
-
-<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Type</span><span class="o">&gt;</span>
-<span class="k">using</span><span class="w"> </span><span class="n">TypeOf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">Type</span><span class="o">::</span><span class="n">type</span><span class="p">;</span>
-
-<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">...</span><span class="w"> </span><span class="n">Indices</span><span class="o">&gt;</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">IndexSequence</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Identifier</span><span class="o">&lt;</span><span class="n">IndexSequence</span><span class="o">&lt;</span><span class="n">Indices</span><span class="p">...</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="p">{};</span>
-</code></pre>
-        </div>
-
-        <p>
-          The <code>ElementSelector</code> template selects the N-th element
-          from a type list, while <code>SequenceGenerator</code> creates
-          numerical sequences, essential for indexing and accessing tuple
-          elements.
-        </p>
-        <div class="codehilite">
-          <pre><span></span><code><span class="c1">// Select the N-th element in list &lt;Types...&gt;</span>
-<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Index</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Types</span><span class="o">&gt;</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">ElementSelector</span><span class="p">;</span>
-
-<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Index</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">Head</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Tail</span><span class="o">&gt;</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">ElementSelector</span><span class="o">&lt;</span><span class="n">Index</span><span class="p">,</span><span class="w"> </span><span class="n">Head</span><span class="p">,</span><span class="w"> </span><span class="n">Tail</span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ElementSelector</span><span class="o">&lt;</span><span class="n">Index</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="n">Tail</span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{};</span>
-
-<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Head</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Tail</span><span class="o">&gt;</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">ElementSelector</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">Head</span><span class="p">,</span><span class="w"> </span><span class="n">Tail</span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Identifier</span><span class="o">&lt;</span><span class="n">Head</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{};</span>
-
-<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Index</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Types</span><span class="o">&gt;</span>
-<span class="k">using</span><span class="w"> </span><span class="n">SelectElement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TypeOf</span><span class="o">&lt;</span><span class="n">ElementSelector</span><span class="o">&lt;</span><span class="n">Index</span><span class="p">,</span><span class="w"> </span><span class="n">Types</span><span class="p">...</span><span class="o">&gt;&gt;</span><span class="p">;</span>
-
-<span class="c1">// Generate sequence &lt;0, ..., Length - 1&gt;</span>
-<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Length</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">Current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">Sequence</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IndexSequence</span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="o">&gt;</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">SequenceGenerator</span><span class="p">;</span>
-
-<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Length</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">Current</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">...</span><span class="w"> </span><span class="n">Numbers</span><span class="o">&gt;</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">SequenceGenerator</span><span class="o">&lt;</span><span class="n">Length</span><span class="p">,</span><span class="w"> </span><span class="n">Current</span><span class="p">,</span><span class="w"> </span><span class="n">IndexSequence</span><span class="o">&lt;</span><span class="n">Numbers</span><span class="p">...</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">SequenceGenerator</span><span class="o">&lt;</span><span class="n">Length</span><span class="p">,</span><span class="w"> </span><span class="n">Current</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">IndexSequence</span><span class="o">&lt;</span><span class="n">Numbers</span><span class="p">...,</span><span class="w"> </span><span class="n">Current</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="p">{};</span>
-
-<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Length</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">...</span><span class="w"> </span><span class="n">Numbers</span><span class="o">&gt;</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">SequenceGenerator</span><span class="o">&lt;</span><span class="n">Length</span><span class="p">,</span><span class="w"> </span><span class="n">Length</span><span class="p">,</span><span class="w"> </span><span class="n">IndexSequence</span><span class="o">&lt;</span><span class="n">Numbers</span><span class="p">...</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">IndexSequence</span><span class="o">&lt;</span><span class="n">Numbers</span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{};</span>
-
-<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Length</span><span class="o">&gt;</span>
-<span class="k">using</span><span class="w"> </span><span class="n">GenerateSequence</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TypeOf</span><span class="o">&lt;</span><span class="n">SequenceGenerator</span><span class="o">&lt;</span><span class="n">Length</span><span class="o">&gt;&gt;</span><span class="p">;</span>
-</code></pre>
-        </div>
-
-        <p>
-          The <code>TupleElement</code> class template encapsulates each tuple
-          element with its index, allowing direct access.
-        </p>
-        <div class="codehilite">
-          <pre><span></span><code><span class="c1">// Represents an individual tuple element</span>
-<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Index</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">Element</span><span class="o">&gt;</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">TupleElement</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">Element</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="n">Element</span><span class="o">&amp;</span><span class="w"> </span><span class="n">getValue</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Element</span><span class="o">&amp;</span><span class="w"> </span><span class="n">getValue</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+          <pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">wrapper</span><span class="w"> </span><span class="p">{</span>
+<span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="w">  </span><span class="n">wrapper</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
 <span class="p">};</span>
 </code></pre>
         </div>
 
         <p>
-          The <code>TupleImplementation</code> class template uses multiple
-          inheritance and variadic templates to compose the tuple, with elements
-          uniquely accessible via their index.
+          We then implement our core template class, which inherits from a
+          <code>wrapper&lt;T&gt;</code> for every <code>T</code> in a variadic
+          template argument pack <code>Ts</code>:
         </p>
         <div class="codehilite">
-          <pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Indices</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Elements</span><span class="o">&gt;</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">TupleImplementation</span><span class="p">;</span>
-
-<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">...</span><span class="w"> </span><span class="n">Indices</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Elements</span><span class="o">&gt;</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">TupleImplementation</span><span class="o">&lt;</span><span class="n">IndexSequence</span><span class="o">&lt;</span><span class="n">Indices</span><span class="p">...</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">Elements</span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">TupleElement</span><span class="o">&lt;</span><span class="n">Indices</span><span class="p">,</span><span class="w"> </span><span class="n">Elements</span><span class="o">&gt;</span><span class="p">...</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Index</span><span class="o">&gt;</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">PickElement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SelectElement</span><span class="o">&lt;</span><span class="n">Index</span><span class="p">,</span><span class="w"> </span><span class="n">Elements</span><span class="p">...</span><span class="o">&gt;</span><span class="p">;</span>
-<span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Index</span><span class="o">&gt;</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">Element</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TupleElement</span><span class="o">&lt;</span><span class="n">Index</span><span class="p">,</span><span class="w"> </span><span class="n">PickElement</span><span class="o">&lt;</span><span class="n">Index</span><span class="o">&gt;&gt;</span><span class="p">;</span>
-
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Index</span><span class="o">&gt;</span>
-<span class="w">    </span><span class="n">PickElement</span><span class="o">&lt;</span><span class="n">Index</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">getElement</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">Element</span><span class="o">&lt;</span><span class="n">Index</span><span class="o">&gt;::</span><span class="n">getValue</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
-
-<span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Index</span><span class="o">&gt;</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">PickElement</span><span class="o">&lt;</span><span class="n">Index</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">getElement</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">Element</span><span class="o">&lt;</span><span class="n">Index</span><span class="o">&gt;::</span><span class="n">getValue</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
-<span class="p">};</span>
-
-<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Elements</span><span class="o">&gt;</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">Tuple</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">TupleImplementation</span><span class="o">&lt;</span><span class="n">GenerateSequence</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">...(</span><span class="n">Elements</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">Elements</span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="nf">size</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">sizeof</span><span class="p">...(</span><span class="n">Elements</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+          <pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Ts</span><span class="o">&gt;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">unique_tuple</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">wrapper</span><span class="o">&lt;</span><span class="n">Ts</span><span class="o">&gt;</span><span class="p">(</span><span class="n">values</span><span class="p">)...</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">unique_tuple</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Ts</span><span class="o">&amp;</span><span class="p">...</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">wrapper</span><span class="o">&lt;</span><span class="n">Ts</span><span class="o">&gt;</span><span class="p">(</span><span class="n">values</span><span class="p">)...</span><span class="w"> </span><span class="p">{}</span>
 <span class="p">};</span>
 </code></pre>
         </div>
 
         <p>
-          This implementation encapsulates each element in its unique type,
-          ensuring type safety and efficiency, elegantly bypassing the need for
-          complex specializations.
+          From this, we can implement a <code>std::get</code>-esque
+          <code>get</code> template function which returns the object held in
+          the tuple for a specified type <code>T</code>:
+        </p>
+        <div class="codehilite">
+          <pre><span></span><code><span class="c1">// Const overload:</span>
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Ts</span><span class="o">&gt;</span>
+<span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">unique_tuple</span><span class="o">&lt;</span><span class="n">Ts</span><span class="p">...</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">tuple</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="n">wrapper</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;&gt;</span><span class="p">(</span><span class="n">tuple</span><span class="p">).</span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Non-const overload:</span>
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Ts</span><span class="o">&gt;</span>
+<span class="n">T</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get</span><span class="p">(</span><span class="n">unique_tuple</span><span class="o">&lt;</span><span class="n">Ts</span><span class="p">...</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">tuple</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">wrapper</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;&gt;</span><span class="p">(</span><span class="n">tuple</span><span class="p">).</span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+        </div>
+
+        <p>
+          The punchline is that, since <code>unique_tuple</code> inherits from a
+          <code>wrapper&lt;T&gt;</code> for all <code>T</code> in
+          <code>Ts</code>, we are allowed to cast a
+          <code>unique_tuple</code> object into a respective
+          <code>wrapper&lt;T&gt;</code> object for a specified type
+          <code>T</code>. We can then access the object stored in that
+          <code>wrapper&lt;T&gt;</code> via its public
+          <code>value</code> member.
         </p>
         <h2>Resources</h2>
         <p>

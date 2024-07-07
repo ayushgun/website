@@ -308,33 +308,29 @@
         </blockquote>
         <p>
           When working with random access containers in C++, such as
-          <code>std::vector</code>, it's common to use bounds-checked interfaces
-          like the <code>at()</code> member function to ensure safety from
-          undefined behavior or undesirable side effects. However, these
-          interfaces come with a trade-off: they introduce a run-time penalty
-          due to the necessity of checking bounds at run-time. Moreover, they
-          rely on exceptions to signal out-of-bounds access, further adding
-          overhead.
+          <code>std::vector</code>, using bounds-checked interfaces like the
+          <code>at()</code> member function ensures safety from undefined
+          behavior. However, these interfaces introduce a run-time penalty due
+          to the necessity of checking bounds at run-time and relying on
+          exceptions to signal out-of-bounds access.
         </p>
         <h2>Current Bounds Checking</h2>
         <p>
           What if we could perform bounds checking at compile-time instead?
           Compilers can statically prove that a bounds check will always pass,
-          allowing them to omit the checking code entirely. For example,
-          consider the following code:
+          allowing them to omit the checking code entirely. Consider the
+          following code:
         </p>
         <div class="codehilite">
           <pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">foo</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">array</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">array</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">array</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre>
         </div>
 
         <p>
-          In this case, the compiler knows that the array always has ten
-          elements, and we're asking for the element at index zero. Therefore,
-          it knows that it can remove the bounds check and unconditionally
-          return the first element of the array.
+          Here, the compiler knows the array always has ten elements and can
+          remove the bounds check, returning the first element unconditionally.
         </p>
         <p>
           Similarly, when the bounds check is certain to fail, the compiler can
@@ -345,43 +341,30 @@
         </p>
         <div class="codehilite">
           <pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">bar</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">array</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">array</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span><span class="w">  </span><span class="c1">// std::out_of_range(...)</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">array</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span><span class="w">  </span><span class="c1">// throws std::out_of_range</span>
 <span class="p">}</span>
 </code></pre>
         </div>
 
         <p>
-          What if we could similarly leverage this compile-time information to
-          turn these run-time exceptions into compile-time errors?
+          What if we could leverage this compile-time information to turn these
+          run-time exceptions into compile-time errors?
         </p>
         <h2>Implementing Compile-Time Bounds Checking</h2>
         <p>
-          To achieve compile-time bounds checking, we can exploit the GCC
-          compiler extension <code>__builtin_constant_p</code>, which returns
-          whether the compiler knows an (potentially run-time) expression to be
-          a constant at compile-time. We can use this to check if a given
-          <code>index</code> and <code>limit</code> are known at compile-time
-          and trigger a compile-time error if a bounds violation is detected.
+          We can exploit the GCC compiler extension
+          <code>__builtin_constant_p</code>, which returns whether the compiler
+          knows a run-time expression to be a constant at compile-time. We can
+          use this to check if a given <code>index</code> and
+          <code>limit</code> are known at compile-time and trigger a
+          compile-time error if a bounds violation is detected.
         </p>
         <p>
-          But how can we intentionally trigger a compilation error? We can't use
-          <code>static_assert</code> or similar constructs, as they would always
-          fail unconditionally. Since we're not working with expressions that
-          C++ regards as compile-time constants, such as template parameters or
-          <code>constexpr</code> variables, where we could apply
-          <code>static_assert</code> or <code>if constexpr</code>. Instead,
-          we're dealing with expressions considered by the language to be
-          run-time values — even though the optimizer might have additional
-          information about them.
-        </p>
-        <p>
-          The solution is to utilize another compiler extension, the
-          <code>gcc::error</code> attribute. If we enable optimizations,
+          To intentionally trigger a compilation error, we utilize the
+          <code>gcc::error</code> attribute. With optimizations enabled,
           compilation will fail if the <code>failed_bounds_check</code> call is
-          not optimized out. The cherry on top is that, at least with GCC, we
-          get a compiler backtrace that precisely identifies the location of the
-          original problematic code, even through a lengthy series of inlined
-          functions.
+          not optimized away and provide a compiler backtrace that identifies
+          the location of the original problematic code.
         </p>
         <p>Here's what it looks like:</p>
         <div class="codehilite">
@@ -389,23 +372,18 @@
 <span class="kt">void</span><span class="w"> </span><span class="n">bounds_check</span><span class="p">(</span><span class="n">IndexType</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">IndexType</span><span class="w"> </span><span class="n">limit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">__builtin_constant_p</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">__builtin_constant_p</span><span class="p">(</span><span class="n">limit</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">IndexType</span><span class="p">{</span><span class="mi">0</span><span class="p">}</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">limit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="p">[[</span><span class="n">gnu</span><span class="o">::</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;out-of-bounds&quot;</span><span class="p">)]]</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">failed_bounds_check</span><span class="p">();</span>
-<span class="w">      </span><span class="n">failed_bounds_check</span><span class="p">();</span><span class="w">  </span><span class="c1">// Trigger the compile-time error if the call is</span>
-<span class="w">                              </span><span class="c1">// not optimized away</span>
+<span class="w"> </span><span class="p">[[</span><span class="n">gnu</span><span class="o">::</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;out-of-bounds&quot;</span><span class="p">)]]</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">failed_bounds_check</span><span class="p">();</span>
+<span class="w">      </span><span class="n">failed_bounds_check</span><span class="p">();</span><span class="w">  </span><span class="c1">// Triggers the compile-time error if the call is not optimized away</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
         </div>
 
-        <h2>Generic Interfaces</h2>
+        <h2>Generic Interface</h2>
         <p>
-          If we use concepts, we can generalize our compile-time bounds checked
-          interface to any
-          <a
-            href="https://en.cppreference.com/w/cpp/named_req/RandomAccessIterator"
-            >random access container</a
-          >:
+          Using concepts, we can generalize our compile-time bounds-checked
+          interface to any random access container:
         </p>
         <div class="codehilite">
           <pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Container</span><span class="o">&gt;</span>
@@ -423,21 +401,19 @@
         </div>
 
         <p>
-          This allows us to use the <code>get</code> function with any container
-          that satisfies the <code>IndexedContainer</code> concept:
+          This allows us to use the <code>get</code> template function with any
+          container that satisfies the <code>IndexedContainer</code> concept:
         </p>
         <div class="codehilite">
           <pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span><span class="p">;</span>
-<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">get</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">);</span><span class="w">  </span><span class="c1">// error: call to ‘failed_bounds_check’ declared</span>
-<span class="w">                           </span><span class="c1">// with attribute error: out-of-bounds</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">get</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">);</span><span class="w">  </span><span class="c1">// error: call to ‘failed_bounds_check’ declared with attribute error: out-of-bounds</span>
 </code></pre>
         </div>
 
         <h2>Known Limitations</h2>
         <p>
-          Of course, this approach has its limitations. Aside from requiring
-          compiler extensions to be enabled, it needs <code>-O1</code> (or
-          higher) optimizations to be enabled so the
+          This approach requires compiler extensions to be enabled and
+          optimizations (<code>-O1</code> or higher) so the
           <code>failed_bounds_check</code> call can potentially be optimized
           away.
         </p>
@@ -452,8 +428,8 @@
             <a href="https://github.com/tcbrindle/flux"
               >Tristan Brindle's <code>flux</code> library</a
             >
-            uses a similar technique, which served as the inspiration for the
-            idea of generalized static bounds-checked interfaces
+            uses a similar technique and served as the inspiration for
+            generalized static bounds-checked interfaces.
           </li>
         </ul>
       </div>

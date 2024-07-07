@@ -2,132 +2,79 @@
 
 > May 20, 2023
 
-`std::tuple`, introduced in C++11, is one of the most interesting containers available in the standard library.
+`std::tuple`, introduced in C++11, is a distinctive container in the standard library. Unlike traditional STL containers, it is type-flexible, stack-allocated, and has a notably unique interface.
 
-Why? `std::tuple` defies traditional STL container characteristics with its unique features like being type-flexible, stack-allocated, and having a distinct interface.
+## Tuple Overview
 
-## What exactly is `std::tuple`?
+Formally, `std::tuple` is a templated class that encapsulates a fixed-size collection of heterogeneous values, each potentially of a different type. It is particularly useful for generic operations, such as returning multiple values from a function or storing function parameters for delayed execution.
 
-Formally, `std::tuple` is a templated class that encapsulates a fixed-size collection of heterogeneous values, each potentially of a different type. It shines in scenarios requiring multiple return values from a function or in complex data operations involving varied types.
+Contrasting with contiguous containers like `std::vector` or `std::array`, `std::tuple` lacks a subscript operator for index-based access. Instead, it overloads `std::get` to expose tuple elements by requiring the caller to provide an element's index via a template argument.
 
-Contrasting with contiguous containers like `std::vector` or `std::array`, `std::tuple` lacks a subscript operator for index-based access. Instead, its type-flexible nature demands element access via `std::get<I>`, which uses a template argument to specify the element's index.
+For example, to access the first element in a tuple:
 
 ```cpp
-#include <iostream>
-#include <tuple>
-#include <string>
-
-int main() {
-    std::tuple<int, double, std::string> t{1, 4.5, "Hello World"};
-    std::cout << std::get<0>(t) << '\n'; // prints 1 to stdout
-}
+std::tuple<int, double, std::string> t(1, 4.25, "Hello World");
+std::cout << std::get<0>(t) << '\n';
 ```
 
-## A Closer Examination
+## Closer Examination
 
 So why is `std::tuple` so unique as a container?
 
-`std::tuple` stands out due to its extensive use of template metaprogramming, which in this case, improves type safety and enables stack allocation. Functions like `std::get<I>` utilize compile-time type and index deduction. Recursive template instantiation and specialization facilitate safe and unique operations on the tuple's elements.
-
-Internally, `std::tuple` can be analogized to a struct.
+`std::tuple` stands out due to its extensive use of template metaprogramming to store heterogeneous types. Informally, `std::tuple` can be analogized to a struct:
 
 ```cpp
-std::tuple<int, std::string> t{1, "Hello World"};
+std::tuple<int, std::string, ...> t;
 
-// is roughly equivalent to...
+// is roughly equal to:
 
-struct Tuple {
-    int element_1{1};
-    std::string element_2{"Hello World"};
+struct tuple {
+  int value_1;
+  std::string value_2;
+ ...
 };
 ```
 
 ## Looking Under The Hood
 
-Let's examine a simplified `std::tuple` implementation.
+Let's examine a C++ tuple implementation. For simplicity's sake, this implementation will only hold unique types (i.e., two objects of the same type are not allowed) and will not consider move semantics.
 
-We start with foundational templates, which are crucial for type manipulations and sequence generation.
-
-```cpp
-template <typename Type>
-struct Identifier { using type = Type; };
-
-template <typename Type>
-using TypeOf = typename Type::type;
-
-template <size_t... Indices>
-struct IndexSequence : Identifier<IndexSequence<Indices...>> {};
-```
-
-The `ElementSelector` template selects the N-th element from a type list, while `SequenceGenerator` creates numerical sequences, essential for indexing and accessing tuple elements.
+We begin with a minimal wrapper around an object of type `T`:
 
 ```cpp
-// Select the N-th element in list <Types...>
-template <size_t Index, typename... Types>
-struct ElementSelector;
-
-template <size_t Index, typename Head, typename... Tail>
-struct ElementSelector<Index, Head, Tail...> : ElementSelector<Index-1, Tail...> {};
-
-template <typename Head, typename... Tail>
-struct ElementSelector<0, Head, Tail...> : Identifier<Head> {};
-
-template <size_t Index, typename... Types>
-using SelectElement = TypeOf<ElementSelector<Index, Types...>>;
-
-// Generate sequence <0, ..., Length - 1>
-template <size_t Length, size_t Current = 0, typename Sequence = IndexSequence<> >
-struct SequenceGenerator;
-
-template <size_t Length, size_t Current, size_t... Numbers>
-struct SequenceGenerator<Length, Current, IndexSequence<Numbers...>> : SequenceGenerator<Length, Current+1, IndexSequence<Numbers..., Current>> {};
-
-template <size_t Length, size_t... Numbers>
-struct SequenceGenerator<Length, Length, IndexSequence<Numbers...>> : IndexSequence<Numbers...> {};
-
-template <size_t Length>
-using GenerateSequence = TypeOf<SequenceGenerator<Length>>;
-```
-
-The `TupleElement` class template encapsulates each tuple element with its index, allowing direct access.
-
-```cpp
-// Represents an individual tuple element
-template <size_t Index, typename Element>
-class TupleElement {
-    Element value;
-public:
-    Element& getValue() { return value; }
-    const Element& getValue() const { return value; }
+template <typename T>
+struct wrapper {
+ T value;
+  wrapper(T value) : value(value) {}
 };
 ```
 
-The `TupleImplementation` class template uses multiple inheritance and variadic templates to compose the tuple, with elements uniquely accessible via their index.
+We then implement our core template class, which inherits from a `wrapper<T>` for every `T` in a variadic template argument pack `Ts`:
 
 ```cpp
-template <typename Indices, typename... Elements>
-class TupleImplementation;
-
-template <size_t... Indices, typename... Elements>
-class TupleImplementation<IndexSequence<Indices...>, Elements...> : public TupleElement<Indices, Elements>... {
-    template <size_t Index> using PickElement = SelectElement<Index, Elements...>;
-    template <size_t Index> using Element = TupleElement<Index, PickElement<Index>>;
-
-public:
-    template <size_t Index>
-    PickElement<Index>& getElement() { return Element<Index>::getValue(); }
-
-    template <size_t Index>
-    const PickElement<Index>& getElement() const { return Element<Index>::getValue(); }
-};
-
-template <typename... Elements>
-struct Tuple : TupleImplementation<GenerateSequence<sizeof...(Elements)>, Elements...> {
-    static constexpr std::size_t size() { return sizeof...(Elements); }
+template <typename... Ts>
+struct unique_tuple : public wrapper<Ts>(values)... {
+  unique_tuple(const Ts&... values) : wrapper<Ts>(values)... {}
 };
 ```
 
-This implementation encapsulates each element in its unique type, ensuring type safety and efficiency, elegantly bypassing the need for complex specializations.
+From this, we can implement a `std::get`-esque `get` template function which returns the object held in the tuple for a specified type `T`:
+
+```cpp
+// Const overload:
+template <typename T, typename... Ts>
+const T& get(const unique_tuple<Ts...>& tuple) {
+  return static_cast<const wrapper<T>&>(tuple).value;
+}
+
+// Non-const overload:
+template <typename T, typename... Ts>
+T& get(unique_tuple<Ts...>& tuple) {
+  return static_cast<wrapper<T>&>(tuple).value;
+}
+```
+
+The punchline is that, since `unique_tuple` inherits from a `wrapper<T>` for all `T` in `Ts`, we are allowed to cast a `unique_tuple` object into a respective `wrapper<T>` object for a specified type `T`. We can then access the object stored in that `wrapper<T>` via its public `value` member.
 
 ## Resources
 
