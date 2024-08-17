@@ -1,3 +1,13 @@
+"""
+Build system for a personal blog website:
+
+1. Converts Markdown (.md) files in "posts/markdown" to HTML using Pygments for code highlighting and saves them in "posts/html".
+2. Updates the main "blog.html" with links to posts, ordered by date from the Markdown files.
+3. Formats the generated HTML files using Prettier for consistent styling.
+
+Automates the process of generating and maintaining blog content.
+"""
+
 import subprocess
 from datetime import datetime
 from pathlib import Path
@@ -11,11 +21,8 @@ def convert_md_to_html(md_file_path, html_file_path):
     with open(md_file_path, "r", encoding="utf-8") as md_file:
         md_content = md_file.read()
 
-    # Use Pygments with the dark theme
     formatter = HtmlFormatter(style="nord")
     css_code_highlighting = formatter.get_style_defs(".codehilite")
-
-    # Remove bold styling
     css_code_highlighting = css_code_highlighting.replace("bold", "normal")
 
     html_content = markdown.markdown(
