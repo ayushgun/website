@@ -31,7 +31,7 @@ std::tuple<int, std::string, ...> t;
 struct tuple {
   int value_1;
   std::string value_2;
- ...
+  ...
 };
 ```
 
@@ -44,7 +44,7 @@ We begin with a minimal wrapper around an object of type `T`:
 ```cpp
 template <typename T>
 struct wrapper {
- T value;
+  T value;
   wrapper(T value) : value(value) {}
 };
 ```
