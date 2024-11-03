@@ -330,7 +330,7 @@
         </p>
         <p>For example, to access the first element in a tuple:</p>
         <div class="codehilite">
-          <pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mf">4.25</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Hello World&quot;</span><span class="p">);</span>
+          <pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mf">4.25</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Hello World&quot;</span><span class="p">};</span>
 <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span>
 </code></pre>
         </div>
@@ -367,22 +367,21 @@
         </p>
         <div class="codehilite">
           <pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">wrapper</span><span class="w"> </span><span class="p">{</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">leaf</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
-<span class="w">  </span><span class="n">wrapper</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
 <span class="p">};</span>
 </code></pre>
         </div>
 
         <p>
           We then implement our core template class, which inherits from a
-          <code>wrapper&lt;T&gt;</code> for every <code>T</code> in a variadic
+          <code>leaf&lt;T&gt;</code> for every <code>T</code> in a variadic
           template argument pack <code>Ts</code>:
         </p>
         <div class="codehilite">
           <pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Ts</span><span class="o">&gt;</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">unique_tuple</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">wrapper</span><span class="o">&lt;</span><span class="n">Ts</span><span class="o">&gt;</span><span class="p">(</span><span class="n">values</span><span class="p">)...</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">unique_tuple</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Ts</span><span class="o">&amp;</span><span class="p">...</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">wrapper</span><span class="o">&lt;</span><span class="n">Ts</span><span class="o">&gt;</span><span class="p">(</span><span class="n">values</span><span class="p">)...</span><span class="w"> </span><span class="p">{}</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">unique_tuple</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">leaf</span><span class="o">&lt;</span><span class="n">Ts</span><span class="o">&gt;</span><span class="p">...</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">unique_tuple</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Ts</span><span class="o">&amp;</span><span class="p">...</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">leaf</span><span class="o">&lt;</span><span class="n">Ts</span><span class="o">&gt;</span><span class="p">(</span><span class="n">values</span><span class="p">)...</span><span class="w"> </span><span class="p">{}</span>
 <span class="p">};</span>
 </code></pre>
         </div>
@@ -395,28 +394,32 @@
         <div class="codehilite">
           <pre><span></span><code><span class="c1">// Const overload:</span>
 <span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Ts</span><span class="o">&gt;</span>
-<span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">unique_tuple</span><span class="o">&lt;</span><span class="n">Ts</span><span class="p">...</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">tuple</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="n">wrapper</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;&gt;</span><span class="p">(</span><span class="n">tuple</span><span class="p">).</span><span class="n">value</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">get</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">unique_tuple</span><span class="o">&lt;</span><span class="n">Ts</span><span class="p">...</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">tuple</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="o">&amp;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="n">leaf</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;&gt;</span><span class="p">(</span><span class="n">tuple</span><span class="p">).</span><span class="n">value</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="c1">// Non-const overload:</span>
 <span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">Ts</span><span class="o">&gt;</span>
-<span class="n">T</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get</span><span class="p">(</span><span class="n">unique_tuple</span><span class="o">&lt;</span><span class="n">Ts</span><span class="p">...</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">tuple</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">wrapper</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;&gt;</span><span class="p">(</span><span class="n">tuple</span><span class="p">).</span><span class="n">value</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">get</span><span class="p">(</span><span class="n">unique_tuple</span><span class="o">&lt;</span><span class="n">Ts</span><span class="p">...</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">tuple</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">T</span><span class="o">&amp;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">leaf</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;&gt;</span><span class="p">(</span><span class="n">tuple</span><span class="p">).</span><span class="n">value</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre>
         </div>
 
         <p>
           The punchline is that, since <code>unique_tuple</code> inherits from a
-          <code>wrapper&lt;T&gt;</code> for all <code>T</code> in
-          <code>Ts</code>, we are allowed to cast a
-          <code>unique_tuple</code> object into a respective
-          <code>wrapper&lt;T&gt;</code> object for a specified type
+          <code>leaf&lt;T&gt;</code> for all <code>T</code> in <code>Ts</code>,
+          we are allowed to cast a <code>unique_tuple</code> object into a
+          respective <code>leaf&lt;T&gt;</code> object for a specified type
           <code>T</code>. We can then access the object stored in that
-          <code>wrapper&lt;T&gt;</code> via its public
-          <code>value</code> member.
+          <code>leaf&lt;T&gt;</code> via its public <code>value</code> member.
         </p>
+        <div class="codehilite">
+          <pre><span></span><code><span class="n">unique_tuple</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="p">};</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">get</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</code></pre>
+        </div>
+
         <h2>Resources</h2>
         <p>
           If you'd like to learn more about <code>std::tuple</code>, here are

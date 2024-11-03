@@ -13,7 +13,7 @@ Contrasting with contiguous containers like `std::vector` or `std::array`, `std:
 For example, to access the first element in a tuple:
 
 ```cpp
-std::tuple<int, double, std::string> t(1, 4.25, "Hello World");
+std::tuple<int, double, std::string> t = {1, 4.25, "Hello World"};
 std::cout << std::get<0>(t) << '\n';
 ```
 
@@ -43,18 +43,17 @@ We begin with a minimal wrapper around an object of type `T`:
 
 ```cpp
 template <typename T>
-struct wrapper {
+struct leaf {
   T value;
-  wrapper(T value) : value(value) {}
 };
 ```
 
-We then implement our core template class, which inherits from a `wrapper<T>` for every `T` in a variadic template argument pack `Ts`:
+We then implement our core template class, which inherits from a `leaf<T>` for every `T` in a variadic template argument pack `Ts`:
 
 ```cpp
 template <typename... Ts>
-struct unique_tuple : public wrapper<Ts>(values)... {
-  unique_tuple(const Ts&... values) : wrapper<Ts>(values)... {}
+struct unique_tuple : public leaf<Ts>... {
+  unique_tuple(const Ts&... values) : leaf<Ts>(values)... {}
 };
 ```
 
@@ -63,18 +62,23 @@ From this, we can implement a `std::get`-esque `get` template function which ret
 ```cpp
 // Const overload:
 template <typename T, typename... Ts>
-const T& get(const unique_tuple<Ts...>& tuple) {
-  return static_cast<const wrapper<T>&>(tuple).value;
+auto get(const unique_tuple<Ts...>& tuple) -> const T& {
+  return static_cast<const leaf<T>&>(tuple).value;
 }
 
 // Non-const overload:
 template <typename T, typename... Ts>
-T& get(unique_tuple<Ts...>& tuple) {
-  return static_cast<wrapper<T>&>(tuple).value;
+auto get(unique_tuple<Ts...>& tuple) -> T& {
+  return static_cast<leaf<T>&>(tuple).value;
 }
 ```
 
-The punchline is that, since `unique_tuple` inherits from a `wrapper<T>` for all `T` in `Ts`, we are allowed to cast a `unique_tuple` object into a respective `wrapper<T>` object for a specified type `T`. We can then access the object stored in that `wrapper<T>` via its public `value` member.
+The punchline is that, since `unique_tuple` inherits from a `leaf<T>` for all `T` in `Ts`, we are allowed to cast a `unique_tuple` object into a respective `leaf<T>` object for a specified type `T`. We can then access the object stored in that `leaf<T>` via its public `value` member.
+
+```cpp
+unique_tuple<int, char> t = {1, 'a'};
+std::cout << get<int>(t) << std::endl;
+```
 
 ## Resources
 
