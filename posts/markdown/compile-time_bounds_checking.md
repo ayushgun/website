@@ -6,11 +6,11 @@ When working with random access containers in C++, such as `std::vector`, using 
 
 ## Current Bounds Checking
 
-What if we could perform bounds checking at compile-time instead? Compilers can statically prove that a bounds check will always pass, allowing them to omit the checking code entirely. Consider the following code:
+What if we could perform bounds checking at compile-time instead? Compilers can statically prove that a bounds check will always pass when they have enough information about the container, allowing them to omit the checking code entirely. Consider the following code:
 
 ```cpp
-void foo(const std::array<int, 10>& array) {
-  std::cout << array.at(0) << '\n';
+auto foo(const std::array<int, 10>& array) -> void {
+  std::cout << array.at(0) << std::endl;
 }
 ```
 
@@ -19,12 +19,12 @@ Here, the compiler knows the array always has ten elements and can remove the bo
 Similarly, when the bounds check is certain to fail, the compiler can generate code that [unconditionally throws an exception](https://godbolt.org/z/94K457E7x):
 
 ```cpp
-void bar(const std::array<int, 10>& array) {
-  std::cout << array.at(10) << '\n';  // throws std::out_of_range
+auto bar(const std::array<int, 10>& array) -> void {
+  std::cout << array.at(10) << std::endl;  // throws std::out_of_range
 }
 ```
 
-What if we could leverage this compile-time information to turn these run-time exceptions into compile-time errors?
+What if we could leverage the compiler's understanding of this static information to turn these run-time exceptions into compile-time errors?
 
 ## Implementing Compile-Time Bounds Checking
 
@@ -35,11 +35,11 @@ To intentionally trigger a compilation error, we utilize the `gcc::error` attrib
 Here's what it looks like:
 
 ```cpp
-template <typename IndexType>
-void bounds_check(IndexType index, IndexType limit) {
+template <std::integral I>
+constexpr auto check_bounds(I index, I limit) -> void {
   if (__builtin_constant_p(index) && __builtin_constant_p(limit)) {
-    if (index < IndexType{0} || index >= limit) {
- [[gnu::error("out-of-bounds")]] void failed_bounds_check();
+    if (index < I{0} || index >= limit) {
+      [[gnu::error("out-of-bounds")]] void failed_bounds_check();
       failed_bounds_check();  // Triggers the compile-time error if the call is not optimized away
     }
   }
@@ -51,16 +51,20 @@ void bounds_check(IndexType index, IndexType limit) {
 Using concepts, we can generalize our compile-time bounds-checked interface to any random access container:
 
 ```cpp
-template <typename Container>
-concept IndexedContainer = requires(Container container, std::size_t index) {
-  container[index];
-  { container.size() } -> std::same_as<std::size_t>;
-};
+template <typename T>
+concept is_random_access =
+    requires(T container) { requires std::random_access_iterator<typename T::iterator>; };
 
-template <IndexedContainer Container>
-decltype(auto) get(Container&& container, std::size_t index) {
-  bounds_check(index, container.size());
-  return std::forward<Container>(container)[index];
+template <is_random_access T>
+constexpr auto get(const T& container, std::size_t index) -> typename T::const_reference {
+  check_bounds(index, container.size());
+  return container[index];
+}
+
+template <is_random_access T>
+constexpr auto get(T& container, std::size_t index) -> typename T::reference {
+  check_bounds(index, container.size());
+  return container[index];
 }
 ```
 
@@ -68,7 +72,18 @@ This allows us to use the `get` template function with any container that satisf
 
 ```cpp
 std::string msg = "Hello";
-std::cout << get(msg, 9);  // error: call to ‘failed_bounds_check’ declared with attribute error: out-of-bounds
+std::cout << get(msg, 9) << std::endl;
+```
+
+If we attempt to compile this:
+```
+$ g++ src/main.cpp -std=c++20 -O1
+In function 'constexpr void check_bounds(I, I) [with I = long unsigned int]',
+    inlined from 'constexpr typename T::reference get(T&, std::size_t) [with T = std::__cxx11::basic_string<char>]' at src/main.cpp:29:15,
+    inlined from 'int main()' at src/main.cpp:35:6:
+src/main.cpp:12:26: error: call to 'failed_bounds_check' declared with attribute error: out-of-bounds
+   12 |       failed_bounds_check();  // Triggers the compile-time error if the call is not optimized away
+      |       ~~~~~~~~~~~~~~~~~~~^~
 ```
 
 ## Known Limitations

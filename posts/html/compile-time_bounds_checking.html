@@ -317,13 +317,13 @@
         <h2>Current Bounds Checking</h2>
         <p>
           What if we could perform bounds checking at compile-time instead?
-          Compilers can statically prove that a bounds check will always pass,
-          allowing them to omit the checking code entirely. Consider the
-          following code:
+          Compilers can statically prove that a bounds check will always pass
+          when they have enough information about the container, allowing them
+          to omit the checking code entirely. Consider the following code:
         </p>
         <div class="codehilite">
-          <pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">foo</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">array</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">array</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+          <pre><span></span><code><span class="k">auto</span><span class="w"> </span><span class="n">foo</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">array</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">array</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre>
         </div>
@@ -340,15 +340,16 @@
           >:
         </p>
         <div class="codehilite">
-          <pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">bar</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">array</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">array</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span><span class="w">  </span><span class="c1">// throws std::out_of_range</span>
+          <pre><span></span><code><span class="k">auto</span><span class="w"> </span><span class="n">bar</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">array</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">array</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// throws std::out_of_range</span>
 <span class="p">}</span>
 </code></pre>
         </div>
 
         <p>
-          What if we could leverage this compile-time information to turn these
-          run-time exceptions into compile-time errors?
+          What if we could leverage the compiler's understanding of this static
+          information to turn these run-time exceptions into compile-time
+          errors?
         </p>
         <h2>Implementing Compile-Time Bounds Checking</h2>
         <p>
@@ -368,11 +369,11 @@
         </p>
         <p>Here's what it looks like:</p>
         <div class="codehilite">
-          <pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">IndexType</span><span class="o">&gt;</span>
-<span class="kt">void</span><span class="w"> </span><span class="n">bounds_check</span><span class="p">(</span><span class="n">IndexType</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">IndexType</span><span class="w"> </span><span class="n">limit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+          <pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">integral</span><span class="w"> </span><span class="n">I</span><span class="o">&gt;</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">check_bounds</span><span class="p">(</span><span class="n">I</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">I</span><span class="w"> </span><span class="n">limit</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">__builtin_constant_p</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">__builtin_constant_p</span><span class="p">(</span><span class="n">limit</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">IndexType</span><span class="p">{</span><span class="mi">0</span><span class="p">}</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">limit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w"> </span><span class="p">[[</span><span class="n">gnu</span><span class="o">::</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;out-of-bounds&quot;</span><span class="p">)]]</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">failed_bounds_check</span><span class="p">();</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">I</span><span class="p">{</span><span class="mi">0</span><span class="p">}</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">limit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="p">[[</span><span class="n">gnu</span><span class="o">::</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;out-of-bounds&quot;</span><span class="p">)]]</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">failed_bounds_check</span><span class="p">();</span>
 <span class="w">      </span><span class="n">failed_bounds_check</span><span class="p">();</span><span class="w">  </span><span class="c1">// Triggers the compile-time error if the call is not optimized away</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
@@ -386,16 +387,20 @@
           interface to any random access container:
         </p>
         <div class="codehilite">
-          <pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Container</span><span class="o">&gt;</span>
-<span class="k">concept</span><span class="w"> </span><span class="nc">IndexedContainer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">requires</span><span class="p">(</span><span class="n">Container</span><span class="w"> </span><span class="n">container</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">index</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">container</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
-<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">container</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">same_as</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">;</span>
-<span class="p">};</span>
+          <pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">concept</span><span class="w"> </span><span class="nc">is_random_access</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="k">requires</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">container</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">requires</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">random_access_iterator</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">::</span><span class="n">iterator</span><span class="o">&gt;</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
 
-<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">IndexedContainer</span><span class="w"> </span><span class="n">Container</span><span class="o">&gt;</span>
-<span class="k">decltype</span><span class="p">(</span><span class="k">auto</span><span class="p">)</span><span class="w"> </span><span class="n">get</span><span class="p">(</span><span class="n">Container</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">container</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">index</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">bounds_check</span><span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">container</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">Container</span><span class="o">&gt;</span><span class="p">(</span><span class="n">container</span><span class="p">)[</span><span class="n">index</span><span class="p">];</span>
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">is_random_access</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="o">&amp;</span><span class="w"> </span><span class="n">container</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">index</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">::</span><span class="n">const_reference</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">check_bounds</span><span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">container</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">container</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">is_random_access</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">get</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;</span><span class="w"> </span><span class="n">container</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">index</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">::</span><span class="n">reference</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">check_bounds</span><span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">container</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">container</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
 <span class="p">}</span>
 </code></pre>
         </div>
@@ -406,7 +411,19 @@
         </p>
         <div class="codehilite">
           <pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span><span class="p">;</span>
-<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">get</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">);</span><span class="w">  </span><span class="c1">// error: call to ‘failed_bounds_check’ declared with attribute error: out-of-bounds</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">get</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</code></pre>
+        </div>
+
+        <p>If we attempt to compile this:</p>
+        <div class="codehilite">
+          <pre><span></span><code>$<span class="w"> </span>g++<span class="w"> </span>src/main.cpp<span class="w"> </span>-std<span class="o">=</span>c++20<span class="w"> </span>-O1
+In<span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="s1">&#39;constexpr void check_bounds(I, I) [with I = long unsigned int]&#39;</span>,
+<span class="w">    </span>inlined<span class="w"> </span>from<span class="w"> </span><span class="s1">&#39;constexpr typename T::reference get(T&amp;, std::size_t) [with T = std::__cxx11::basic_string&lt;char&gt;]&#39;</span><span class="w"> </span>at<span class="w"> </span>src/main.cpp:29:15,
+<span class="w">    </span>inlined<span class="w"> </span>from<span class="w"> </span><span class="s1">&#39;int main()&#39;</span><span class="w"> </span>at<span class="w"> </span>src/main.cpp:35:6:
+src/main.cpp:12:26:<span class="w"> </span>error:<span class="w"> </span>call<span class="w"> </span>to<span class="w"> </span><span class="s1">&#39;failed_bounds_check&#39;</span><span class="w"> </span>declared<span class="w"> </span>with<span class="w"> </span>attribute<span class="w"> </span>error:<span class="w"> </span>out-of-bounds
+<span class="w">   </span><span class="m">12</span><span class="w"> </span><span class="p">|</span><span class="w">       </span>failed_bounds_check<span class="o">()</span><span class="p">;</span><span class="w">  </span>//<span class="w"> </span>Triggers<span class="w"> </span>the<span class="w"> </span>compile-time<span class="w"> </span>error<span class="w"> </span><span class="k">if</span><span class="w"> </span>the<span class="w"> </span>call<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>optimized<span class="w"> </span>away
+<span class="w">      </span><span class="p">|</span><span class="w">       </span>~~~~~~~~~~~~~~~~~~~^~
 </code></pre>
         </div>
 

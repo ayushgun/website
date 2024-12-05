@@ -14,7 +14,7 @@ For example, to access the first element in a tuple:
 
 ```cpp
 std::tuple<int, double, std::string> t = {1, 4.25, "Hello World"};
-std::cout << std::get<0>(t) << '\n';
+std::cout << std::get<0>(t) << std::endl;
 ```
 
 ## Closer Examination
@@ -62,13 +62,13 @@ From this, we can implement a `std::get`-esque `get` template function which ret
 ```cpp
 // Const overload:
 template <typename T, typename... Ts>
-auto get(const unique_tuple<Ts...>& tuple) -> const T& {
+constexpr auto get(const unique_tuple<Ts...>& tuple) -> const T& {
   return static_cast<const leaf<T>&>(tuple).value;
 }
 
 // Non-const overload:
 template <typename T, typename... Ts>
-auto get(unique_tuple<Ts...>& tuple) -> T& {
+constexpr auto get(unique_tuple<Ts...>& tuple) -> T& {
   return static_cast<leaf<T>&>(tuple).value;
 }
 ```
