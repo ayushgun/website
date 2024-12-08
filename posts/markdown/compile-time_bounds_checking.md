@@ -51,20 +51,16 @@ constexpr auto check_bounds(I index, I limit) -> void {
 Using concepts, we can generalize our compile-time bounds-checked interface to any random access container:
 
 ```cpp
-template <typename T>
-concept is_random_access =
-    requires(T container) { requires std::random_access_iterator<typename T::iterator>; };
-
-template <is_random_access T>
+template <std::ranges::random_access_range T>
 constexpr auto get(const T& container, std::size_t index) -> typename T::const_reference {
-  check_bounds(index, container.size());
-  return container[index];
+    check_bounds(index, std::ranges::size(container));
+    return container[index];
 }
 
-template <is_random_access T>
+template <std::ranges::random_access_range T>
 constexpr auto get(T& container, std::size_t index) -> typename T::reference {
-  check_bounds(index, container.size());
-  return container[index];
+    check_bounds(index, std::ranges::size(container));
+    return container[index];
 }
 ```
 
