@@ -6,9 +6,9 @@
 
 ## Tuple Overview
 
-Formally, `std::tuple` is a templated class that encapsulates a fixed-size collection of heterogeneous values, each potentially of a different type. It is particularly useful for generic operations, such as returning multiple values from a function or storing function parameters for delayed execution.
+Formally, `std::tuple` is a templated class that encapsulates a fixed-size collection of heterogeneous values, each potentially of a different type [0]. It is particularly useful for generic operations, such as returning multiple values from a function or storing function arguments for delayed execution.
 
-Contrasting with contiguous containers like `std::vector` or `std::array`, `std::tuple` lacks a subscript operator for index-based access. Instead, it overloads `std::get` to expose tuple elements by requiring the caller to provide an element's index via a template argument.
+Contrasting with contiguous containers like `std::vector` or `std::array`, `std::tuple` lacks a subscript operator for index-based access. Instead, it overloads `std::get` to expose tuple elements by requiring the caller to provide an element's index via a template argument [1].
 
 For example, to access the first element in a tuple:
 
@@ -82,8 +82,6 @@ std::cout << get<int>(t) << std::endl;
 
 ## Resources
 
-If you'd like to learn more about `std::tuple`, here are some resources I found informative:
-
-- <https://en.cppreference.com/w/cpp/utility/tuple>
-- <https://en.cppreference.com/w/cpp/utility/tuple/get>
-- <https://codereview.stackexchange.com/a/44832>
+- [0] <https://en.cppreference.com/w/cpp/utility/tuple>
+- [1] <https://en.cppreference.com/w/cpp/utility/tuple/get>
+- [2] <https://codereview.stackexchange.com/a/44832>

@@ -28,9 +28,9 @@ What if we could leverage the compiler's understanding of this static informatio
 
 ## Implementing Compile-Time Bounds Checking
 
-We can exploit the GCC compiler extension `__builtin_constant_p`, which returns whether the compiler knows a run-time expression to be a constant at compile-time. We can use this to check if a given `index` and `limit` are known at compile-time and trigger a compile-time error if a bounds violation is detected.
+We can exploit the GCC compiler extension `__builtin_constant_p`, which returns whether the compiler knows a run-time expression to be a constant at compile-time [0]. We can use this to check if a given `index` and `limit` are known at compile-time and trigger a compile-time error if a bounds violation is detected.
 
-To intentionally trigger a compilation error, we utilize the `gcc::error` attribute. With optimizations enabled, compilation will fail if the `failed_bounds_check` call is not optimized away and provide a compiler backtrace that identifies the location of the original problematic code.
+To intentionally trigger a compilation error, we utilize the `gcc::error` attribute. With optimizations enabled, compilation will fail if the `failed_bounds_check` call is not optimized away and provide a compiler backtrace that identifies the location of the original problematic code [1].
 
 Here's what it looks like:
 
@@ -92,5 +92,5 @@ This approach requires compiler extensions to be enabled and optimizations (`-O1
 
 ## Resources
 
-- [GCC built-in documentation](https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html)
-- [Tristan Brindle's `flux` library](https://github.com/tcbrindle/flux) uses a similar technique and served as the inspiration for generalized static bounds-checked interfaces.
+- [0] <https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html>
+- [1] <https://github.com/tcbrindle/flux>

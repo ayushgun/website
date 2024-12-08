@@ -316,9 +316,9 @@
         <p>
           Formally, <code>std::tuple</code> is a templated class that
           encapsulates a fixed-size collection of heterogeneous values, each
-          potentially of a different type. It is particularly useful for generic
-          operations, such as returning multiple values from a function or
-          storing function parameters for delayed execution.
+          potentially of a different type [0]. It is particularly useful for
+          generic operations, such as returning multiple values from a function
+          or storing function arguments for delayed execution.
         </p>
         <p>
           Contrasting with contiguous containers like
@@ -326,7 +326,7 @@
           <code>std::tuple</code> lacks a subscript operator for index-based
           access. Instead, it overloads <code>std::get</code> to expose tuple
           elements by requiring the caller to provide an element's index via a
-          template argument.
+          template argument [1].
         </p>
         <p>For example, to access the first element in a tuple:</p>
         <div class="codehilite">
@@ -421,22 +421,21 @@
         </div>
 
         <h2>Resources</h2>
-        <p>
-          If you'd like to learn more about <code>std::tuple</code>, here are
-          some resources I found informative:
-        </p>
         <ul>
           <li>
+            [0]
             <a href="https://en.cppreference.com/w/cpp/utility/tuple"
               >https://en.cppreference.com/w/cpp/utility/tuple</a
             >
           </li>
           <li>
+            [1]
             <a href="https://en.cppreference.com/w/cpp/utility/tuple/get"
               >https://en.cppreference.com/w/cpp/utility/tuple/get</a
             >
           </li>
           <li>
+            [2]
             <a href="https://codereview.stackexchange.com/a/44832"
               >https://codereview.stackexchange.com/a/44832</a
             >

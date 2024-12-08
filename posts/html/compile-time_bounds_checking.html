@@ -355,8 +355,8 @@
         <p>
           We can exploit the GCC compiler extension
           <code>__builtin_constant_p</code>, which returns whether the compiler
-          knows a run-time expression to be a constant at compile-time. We can
-          use this to check if a given <code>index</code> and
+          knows a run-time expression to be a constant at compile-time [0]. We
+          can use this to check if a given <code>index</code> and
           <code>limit</code> are known at compile-time and trigger a
           compile-time error if a bounds violation is detected.
         </p>
@@ -365,7 +365,7 @@
           <code>gcc::error</code> attribute. With optimizations enabled,
           compilation will fail if the <code>failed_bounds_check</code> call is
           not optimized away and provide a compiler backtrace that identifies
-          the location of the original problematic code.
+          the location of the original problematic code [1].
         </p>
         <p>Here's what it looks like:</p>
         <div class="codehilite">
@@ -437,16 +437,16 @@ src/main.cpp:12:26:<span class="w"> </span>error:<span class="w"> </span>call<sp
         <h2>Resources</h2>
         <ul>
           <li>
+            [0]
             <a href="https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html"
-              >GCC built-in documentation</a
+              >https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html</a
             >
           </li>
           <li>
+            [1]
             <a href="https://github.com/tcbrindle/flux"
-              >Tristan Brindle's <code>flux</code> library</a
+              >https://github.com/tcbrindle/flux</a
             >
-            uses a similar technique and served as the inspiration for
-            generalized static bounds-checked interfaces.
           </li>
         </ul>
       </div>
