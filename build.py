@@ -1,35 +1,29 @@
-"""
-Build system for a personal blog website:
-
-1. Converts Markdown (.md) files in "posts/markdown" to HTML using Pygments for code highlighting and saves them in "posts/html".
-2. Updates the main "blog.html" with links to posts, ordered by date from the Markdown files.
-3. Formats the generated HTML files using Prettier for consistent styling.
-
-Automates the process of generating and maintaining blog content.
-"""
-
+from pathlib import Path
 import subprocess
 from datetime import datetime
-from pathlib import Path
-
 import markdown
 from bs4 import BeautifulSoup
 from pygments.formatters import HtmlFormatter
 
 
-def convert_md_to_html(md_file_path, html_file_path):
-    with open(md_file_path, "r", encoding="utf-8") as md_file:
-        md_content = md_file.read()
+def render_post(md_path: Path) -> str:
+    """Convert raw markdown post content to styled HTML and return as a string."""
 
-    formatter = HtmlFormatter(style="nord")
+    # Read the markdown file
+    md_content = md_path.read_text(encoding="utf-8")
+
+    # Convert to HTML using markdown with code highlighting extensions include fenced_code
+    # and codehilite for syntax highlighting
+    html_body = markdown.markdown(md_content, extensions=["fenced_code", "codehilite"])
+
+    # Create Pygments CSS
+    formatter = HtmlFormatter(style="lovelace")
     css_code_highlighting = formatter.get_style_defs(".codehilite")
     css_code_highlighting = css_code_highlighting.replace("bold", "normal")
+    css_code_highlighting = css_code_highlighting.replace("italic", "normal")
 
-    html_content = markdown.markdown(
-        md_content, extensions=["fenced_code", "codehilite"]
-    )
-
-    html_content_wrapped = f"""
+    # Wrap in an HTML template
+    html_template = f"""
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -40,75 +34,91 @@ def convert_md_to_html(md_file_path, html_file_path):
       {css_code_highlighting}
       .codehilite {{ background: transparent; }}
     </style>
+    <title>Ayush Gundawar &mdash; Post</title>
   </head>
   <body>
     <div class="container">
       <div class="content">
-        {html_content}
+        {html_body}
       </div>
     </div>
   </body>
 </html>
 """
 
-    with open(html_file_path, "w", encoding="utf-8") as html_file:
-        html_file.write(html_content_wrapped)
-
-    # Format the html file using prettier
-    subprocess.run(["prettier", "--write", html_file_path], check=True)
+    return html_template
 
 
-def update_blog_html(md_files_path, html_files):
-    with open("blog.html", "r", encoding="utf-8") as blog_file:
-        blog_html = blog_file.read()
+def render_blog() -> None:
+    """Render blog.html with entries for all blog posts."""
 
-    soup = BeautifulSoup(blog_html, "html.parser")
+    md_files = sorted(Path("posts/markdown").rglob("*.md"))
 
-    # Clear the content of the div with id post-links
-    div = soup.find(id="post-links")
-    div.clear()
-
-    # Create a list of tuples containing the md_file_path, html_file, and date
+    # Extract post data (title, date, corresponding html file name)
     post_data = []
-    for md_file_path, html_file in zip(md_files_path, html_files):
-        with open(md_file_path, "r", encoding="utf-8") as md_file:
-            date_string = md_file.readlines()[2].strip().replace("> ", "")
-        post_data.append((md_file_path, html_file, date_string))
+    for md_file_path in md_files:
+        lines = md_file_path.read_text(encoding="utf-8").splitlines()
 
-    # Sort post_data by date (newest first)
-    post_data.sort(key=lambda x: datetime.strptime(x[2], "%B %d, %Y"), reverse=True)
+        # First line: # Title
+        # Second line: > Month DD, YYYY
+        title_line = lines[0].lstrip("# ").strip()
+        date_line = lines[2].lstrip("> ").strip()
 
-    for md_file_path, html_file, date_string in post_data:
-        a = soup.new_tag("a", href=f"posts/html/{html_file}")
+        # Corresponding HTML file name
+        html_name = md_file_path.with_suffix(".html").name
+        post_data.append((title_line, date_line, html_name))
 
-        # Remove .html extension and format post's name to title case
-        post_name = html_file.replace(".html", "").replace("_", " ").title()
-        a.string = post_name
-        div.append(a)
+    # Sort posts by date descending (newest first)
+    post_data.sort(key=lambda x: datetime.strptime(x[1], "%B %d, %Y"), reverse=True)
 
-        # Add the creation date below the title
-        blockquote = soup.new_tag("blockquote")
-        blockquote.string = date_string
-        div.append(blockquote)
+    # Modify blog.html
+    blog_html_path = Path("blog.html")
+    soup = BeautifulSoup(blog_html_path.read_text(encoding="utf-8"), "html.parser")
 
-        div.append(soup.new_tag("br"))
+    # Find the div for post links
+    post_links_div = soup.find(id="post-links")
+    if post_links_div is None:
+        raise RuntimeError("No element with id='post-links' found in blog.html")
 
-    with open("blog.html", "w", encoding="utf-8") as blog_file:
-        blog_file.write(str(soup))
+    # Clear existing content
+    post_links_div.clear()  # type: ignore
 
-    # Format the updated blog.html file using prettier
-    subprocess.run(["prettier", "--write", "blog.html"], check=True)
+    # Add each post
+    for title, date_str, html_name in post_data:
+        # Create a link to the post
+        link_tag = soup.new_tag("a", href=f"posts/html/{html_name}")
+        link_tag.string = title
+        post_links_div.append(link_tag)
+
+        # Add a blockquote with the date
+        date_tag = soup.new_tag("blockquote")
+        date_tag.string = date_str
+        post_links_div.append(date_tag)
+
+        # Add a line break for spacing
+        post_links_div.append(soup.new_tag("br"))
+
+    # Write the updated blog.html
+    blog_html_path.write_text(str(soup), encoding="utf-8")
 
 
-def main():
-    md_files_path = sorted(Path("posts/markdown").rglob("*.md"))
-    html_files = [file.with_suffix(".html").name for file in md_files_path]
+def main() -> None:
+    # Ensure output directory exists
+    html_output_dir = Path("posts/html")
+    html_output_dir.mkdir(parents=True, exist_ok=True)
 
-    for md_file_path, html_file in zip(md_files_path, html_files):
-        html_file_path = Path("posts/html") / html_file
-        convert_md_to_html(md_file_path, html_file_path)
+    md_files = sorted(Path("posts/markdown").rglob("*.md"))
 
-    update_blog_html(md_files_path, html_files)
+    # Convert each MD to HTML
+    for md_file_path in md_files:
+        html_content = render_post(md_file_path)
+        html_file_path = html_output_dir / md_file_path.with_suffix(".html").name
+        html_file_path.write_text(html_content, encoding="utf-8")
+        subprocess.run(["prettier", "--write", str(html_file_path)], check=False)
+
+    # Update the blog listing
+    render_blog()
+    subprocess.run(["prettier", "--write", "blog.html"], check=False)
 
 
 if __name__ == "__main__":

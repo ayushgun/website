@@ -88,5 +88,6 @@ This approach requires compiler extensions to be enabled and optimizations (`-O1
 
 ## Resources
 
-- [0] <https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html>
-- [1] <https://github.com/tcbrindle/flux>
+[0] <https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html>
+
+[1] <https://github.com/tcbrindle/flux>
