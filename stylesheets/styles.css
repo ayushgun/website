@@ -2,7 +2,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'verdana', sans-serif;
   font-size: 13px;
   line-height: 1.4;
   overflow: auto;
@@ -80,12 +80,12 @@ pre {
   background-color: #f5f5f7;
   padding: 10px;
   overflow: auto;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 :not(pre) > code {
   padding: 3px;
   border-radius: 4px;
   background-color: #f5f5f7;
-  font-size: 11px;
+  font-size: 12px;
 }
