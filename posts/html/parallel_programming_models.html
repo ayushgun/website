@@ -681,7 +681,7 @@
           kernels have achieved around 75% of the throughput of equivalent cuDNN
           (NVIDIA's highly optimized library) kernels. In one benchmark on
           transformer-layer operations, Triton implementations were typically
-          within 1.2–1.5× of CUDA's performance (some nearly equal). This is a
+          within 1.2-1.5× of CUDA's performance (some nearly equal). This is a
           great trade-off for many cases: you write far less low-level code and
           still get most of the performance.
         </p>
@@ -752,7 +752,7 @@
 
         <p>
           In Mojo, <code>fn</code> declares a function, and the loop over
-          <code>data</code> is auto-vectorized—<code>item[]</code> performs an
+          <code>data</code> is auto-vectorized – <code>item[]</code> performs an
           explicit dereference. Unlike Python, this yields a deterministic ~15×
           speedup by guaranteeing SIMD execution without relying on
           pseudo-indeterministic compiler heuristics or manual intrinsics.
