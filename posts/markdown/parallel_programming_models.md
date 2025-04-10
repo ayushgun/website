@@ -14,9 +14,9 @@ The industry's response in the mid-2000s was to scale out horizontally by adding
 
 ### Different Forms of Parallelism
 
-- Data Parallelism: performing the same operation on different pieces of data simultaneously (e.g. adding two arrays element-wise in parallel).
-- Task Parallelism: running independent tasks or functions in parallel, which may be doing different things (e.g. a web server handling multiple requests on different threads).
-- Device Parallelism: spreading work across multiple physical devices (like using multiple servers, or offloading some tasks to a GPU or TPU). This can be seen as a coarse-grained form of task parallelism across machines or specialized processors.
+1. Data Parallelism: performing the same operation on different pieces of data simultaneously (e.g. adding two arrays element-wise in parallel).
+2. Task Parallelism: running independent tasks or functions in parallel, which may be doing different things (e.g. a web server handling multiple requests on different threads).
+3. Device Parallelism: spreading work across multiple physical devices (like using multiple servers, or offloading some tasks to a GPU or TPU). This can be seen as a coarse-grained form of task parallelism across machines or specialized processors.
 
 Modern high-performance computing often combines these forms. In this post, we'll mostly concentrate on data parallelism – making an algorithm execute faster by applying it in parallel on many data elements.
 
@@ -134,8 +134,9 @@ Most hardware uses 64-byte cache lines, and C++17 provides the compile-time cons
 ## Parallelism on GPU
 
 While CPUs have a handful of cores optimized for sequential performance, GPUs have thousands of smaller cores designed for massive data parallelism. A GPU is essentially a compute fabric for running the same operation on a huge number of data elements in parallel. NVIDIA's CUDA framework (and similar models like OpenCL) let programmers launch a kernel (a function to execute on the GPU) across a grid of threads. The GPU hardware groups threads into blocks and warps for scheduling:
-- A block is a group of threads that execute on the same multiprocessor (SM in NVIDIA terms) and can cooperate via fast shared memory.
-- A grid is the collection of all blocks launched for a given kernel invocation. You might launch, say, 1000 blocks of 256 threads each, for a total of 256,000 threads executing your kernel in parallel.
+
+1. A block is a group of threads that execute on the same multiprocessor (SM in NVIDIA terms) and can cooperate via fast shared memory.
+2. A grid is the collection of all blocks launched for a given kernel invocation. You might launch, say, 1000 blocks of 256 threads each, for a total of 256,000 threads executing your kernel in parallel.
 
 Importantly, GPU threads follow a different execution model known as SIMT (Single Instruction, Multiple Threads). Threads are executed in warps (e.g. 32 threads in NVIDIA GPUs) that proceed in lockstep on the same instruction. In effect, a warp is like a 32-wide SIMD unit – all threads run the same instruction at a time. They can have different data and even take different control paths, but when a warp diverges (e.g. an if/else where half the threads take the if-branch and half take else), the GPU will execute one branch first on those threads while the others are inactive, then the other branch. This means divergent branching within a warp incurs a serial execution of the divergent paths (affecting performance). To get best performance on GPUs, you want threads in a warp to execute the same path as much as possible. Unlike CPU threads, which are fully independent, GPU threads in a warp must execute in lockstep (at least at the granularity of warp instructions).
 
@@ -175,9 +176,10 @@ Almost.
 One observation about the state of parallel programming: we've been bolting parallelism onto fundamentally single-threaded languages. Threads, vector intrinsics, CUDA kernels – these are usually provided via libraries, extensions, or compiler tricks layered on top of a base language model that is sequential. As a result, developers have to constantly switch mental models between "normal" serial code and parallel constructs (which often feel foreign to the language). Wouldn't it be nice if parallelism were a native feature of the language itself?
 
 Mojo is a new language (in development) that attempts to do exactly that. Created by Chris Lattner (known for LLVM, Clang, Swift, and MLIR), Mojo is built with parallel programming as a first-class concern. It uses the MLIR infrastructure under the hood to enable portable, high-performance compilation to various targets (similar in spirit to what Triton does, but in the context of a full language). Mojo aims to unify concepts of CPU parallelism (threads, SIMD) and GPU programming in a single programming model. Some highlights of Mojo's design:
-- It has built-in SIMD vector types and an API to explicitly vectorize code (for example, a vectorize function can apply a given operation in SIMD across a specified width).
-- The type system differentiates between data in host memory and device (accelerator) memory, catching mistakes at compile time and easing portability.
-- In general, many parallel and asynchronous constructs are part of the core language syntax, not ad-hoc add-ons.
+
+1. It has built-in SIMD vector types and an API to explicitly vectorize code (for example, a vectorize function can apply a given operation in SIMD across a specified width).
+2. The type system differentiates between data in host memory and device (accelerator) memory, catching mistakes at compile time and easing portability.
+3. In general, many parallel and asynchronous constructs are part of the core language syntax, not ad-hoc add-ons.
 
 To illustrate Mojo's approach, consider again the task of doubling each element in an array. In plain Python, you'd write a simple loop:
 ```py

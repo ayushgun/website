@@ -318,7 +318,7 @@
           be evenly divided).
         </p>
         <h3>Different Forms of Parallelism</h3>
-        <ul>
+        <ol>
           <li>
             Data Parallelism: performing the same operation on different pieces
             of data simultaneously (e.g. adding two arrays element-wise in
@@ -335,7 +335,7 @@
             TPU). This can be seen as a coarse-grained form of task parallelism
             across machines or specialized processors.
           </li>
-        </ul>
+        </ol>
         <p>
           Modern high-performance computing often combines these forms. In this
           post, we'll mostly concentrate on data parallelism – making an
@@ -577,13 +577,20 @@
           NVIDIA's CUDA framework (and similar models like OpenCL) let
           programmers launch a kernel (a function to execute on the GPU) across
           a grid of threads. The GPU hardware groups threads into blocks and
-          warps for scheduling: - A block is a group of threads that execute on
-          the same multiprocessor (SM in NVIDIA terms) and can cooperate via
-          fast shared memory. - A grid is the collection of all blocks launched
-          for a given kernel invocation. You might launch, say, 1000 blocks of
-          256 threads each, for a total of 256,000 threads executing your kernel
-          in parallel.
+          warps for scheduling:
         </p>
+        <ol>
+          <li>
+            A block is a group of threads that execute on the same
+            multiprocessor (SM in NVIDIA terms) and can cooperate via fast
+            shared memory.
+          </li>
+          <li>
+            A grid is the collection of all blocks launched for a given kernel
+            invocation. You might launch, say, 1000 blocks of 256 threads each,
+            for a total of 256,000 threads executing your kernel in parallel.
+          </li>
+        </ol>
         <p>
           Importantly, GPU threads follow a different execution model known as
           SIMT (Single Instruction, Multiple Threads). Threads are executed in
@@ -700,14 +707,24 @@
           spirit to what Triton does, but in the context of a full language).
           Mojo aims to unify concepts of CPU parallelism (threads, SIMD) and GPU
           programming in a single programming model. Some highlights of Mojo's
-          design: - It has built-in SIMD vector types and an API to explicitly
-          vectorize code (for example, a vectorize function can apply a given
-          operation in SIMD across a specified width). - The type system
-          differentiates between data in host memory and device (accelerator)
-          memory, catching mistakes at compile time and easing portability. - In
-          general, many parallel and asynchronous constructs are part of the
-          core language syntax, not ad-hoc add-ons.
+          design:
         </p>
+        <ol>
+          <li>
+            It has built-in SIMD vector types and an API to explicitly vectorize
+            code (for example, a vectorize function can apply a given operation
+            in SIMD across a specified width).
+          </li>
+          <li>
+            The type system differentiates between data in host memory and
+            device (accelerator) memory, catching mistakes at compile time and
+            easing portability.
+          </li>
+          <li>
+            In general, many parallel and asynchronous constructs are part of
+            the core language syntax, not ad-hoc add-ons.
+          </li>
+        </ol>
         <p>
           To illustrate Mojo's approach, consider again the task of doubling
           each element in an array. In plain Python, you'd write a simple loop:
