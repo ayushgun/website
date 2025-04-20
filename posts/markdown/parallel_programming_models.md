@@ -2,7 +2,7 @@
 
 > April 5, 2025
 
-Yesterday, I spoke at the [Programming Languages Club at Georgia Tech](https://dtyped.netlify.app) about exposing models for parallelism in programming languages. You can find the slides [here](https://cdn.discordapp.com/attachments/1345041727899176980/1357803322240798830/Parallel_Programming_Models.pdf?ex=67f2d9e2&is=67f18862&hm=c9cdad2eafb1d22665ed424a99d117c9f59208354c68d713c0499b24cc81d28c&). This post is a synopsis of the content I went over in my talk.
+Yesterday, I spoke at the [Programming Languages Club at Georgia Tech](https://dtyped.netlify.app) about exposing models for parallelism in programming languages. You can find the slides [here](https://drive.google.com/file/d/1Gs3_vpIsAcCgR79eh9m6_rQjnRKktsJQ/view?usp=share_link). This post is a synopsis of the content I went over in my talk.
 
 ## Motivation for Parallelism
 
